@@ -1,0 +1,2637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM DCO v4.0 — Entraînement Intensif</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23e63946'/><text x='16' y='23' font-family='Arial Black,sans-serif' font-weight='900' font-size='20' text-anchor='middle' fill='white'>D</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+:root{--bg:#0f0f13;--bg2:#16161d;--bg3:#1e1e28;--border:#2a2a38;--accent:#e63946;--accent2:#4361ee;--correct:#06d6a0;--wrong:#e63946;--warn:#ffb703;--text:#e8e8f0;--text2:#9898b0;--radius:12px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+/* HEADER */
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:1rem;flex-wrap:wrap;}
+header h1{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;}
+header h1 .dco{color:var(--accent);}
+.v-badge{background:var(--accent);color:white;font-size:0.6rem;padding:0.15rem 0.45rem;border-radius:4px;letter-spacing:0.05em;vertical-align:middle;margin-left:4px;}
+.hdr-right{display:flex;align-items:center;gap:1rem;}
+.hdr-stats{display:flex;gap:1.5rem;font-size:0.8rem;color:var(--text2);}
+.hdr-stats strong{color:var(--text);font-size:1rem;}
+.prog-btn{background:transparent;border:1px solid var(--border);color:var(--text2);padding:0.35rem 0.8rem;border-radius:6px;font-size:0.72rem;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.15s;}
+.prog-btn:hover{border-color:var(--accent2);color:var(--text);}
+/* MAIN */
+main{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+.pbar-wrap{background:var(--bg3);border-radius:99px;height:6px;margin-bottom:2rem;overflow:hidden;}
+.pbar{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:99px;transition:width 0.4s ease;}
+/* PROGRESS SCREEN */
+#prog-screen{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-bottom:1.5rem;}
+.prog-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:1.5rem;}
+.prog-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.5rem;}
+.pstat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem;text-align:center;}
+.pstat-val{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;}
+.pstat-lbl{font-size:0.7rem;color:var(--text2);margin-top:0.2rem;}
+.trend-wrap{margin-bottom:1.5rem;}
+.trend-top{font-size:0.75rem;color:var(--text2);margin-bottom:0.5rem;font-weight:600;}
+.trend-bar{display:flex;align-items:flex-end;gap:4px;height:60px;background:var(--bg3);border-radius:6px;padding:6px;box-sizing:border-box;}
+.tcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end;}
+.tbar{width:100%;border-radius:3px 3px 0 0;min-height:3px;}
+.tlbl{font-size:0.58rem;color:var(--text2);}
+.sess-list{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;}
+.sess-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.9rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;flex-wrap:wrap;}
+.sess-date{font-size:0.8rem;color:var(--text2);}
+.sess-score{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;}
+.s-ex{color:var(--correct);} .s-go{color:var(--warn);} .s-ba{color:var(--wrong);}
+.sess-det{font-size:0.75rem;color:var(--text2);}
+.sess-mode{font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:99px;background:var(--border);color:var(--text2);font-weight:600;text-transform:uppercase;}
+.btn-clear{background:transparent;border:1px solid var(--border);color:var(--text2);padding:0.5rem 1rem;border-radius:6px;font-size:0.78rem;cursor:pointer;transition:all 0.15s;}
+.btn-clear:hover{border-color:var(--wrong);color:var(--wrong);}
+.no-sess{color:var(--text2);font-size:0.9rem;text-align:center;padding:2rem;}
+/* BADGES */
+.cat-badge{display:inline-block;padding:0.25rem 0.75rem;border-radius:99px;font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem;}
+.cat-pacte{background:rgba(67,97,238,0.2);color:#a0b4ff;border:1px solid rgba(67,97,238,0.3);}
+.cat-system{background:rgba(230,57,70,0.15);color:#ff9aa2;border:1px solid rgba(230,57,70,0.25);}
+.cat-etab{background:rgba(255,183,3,0.15);color:#ffd166;border:1px solid rgba(255,183,3,0.25);}
+.cat-systheo{background:rgba(6,214,160,0.15);color:#80ffda;border:1px solid rgba(6,214,160,0.25);}
+.cat-dco{background:rgba(142,68,173,0.2);color:#d7b2f7;border:1px solid rgba(142,68,173,0.3);}
+.cat-pilotage{background:rgba(22,160,133,0.2);color:#7dffe8;border:1px solid rgba(22,160,133,0.3);}
+.diff{display:inline-block;font-size:0.65rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:4px;margin-left:0.5rem;vertical-align:middle;letter-spacing:0.05em;text-transform:uppercase;}
+.diff-facile{background:rgba(6,214,160,0.2);color:var(--correct);}
+.diff-moyen{background:rgba(255,183,3,0.2);color:var(--warn);}
+.diff-difficile{background:rgba(230,57,70,0.2);color:var(--wrong);}
+/* QUESTION */
+.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-bottom:1.5rem;}
+.q-num{font-size:0.75rem;color:var(--text2);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;}
+.q-text{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:600;line-height:1.5;margin-bottom:1.5rem;}
+.options{display:flex;flex-direction:column;gap:0.6rem;}
+.opt{display:flex;align-items:flex-start;gap:0.75rem;padding:0.85rem 1rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.15s;background:var(--bg3);font-size:0.92rem;color:var(--text);text-align:left;width:100%;}
+.opt:hover:not(:disabled){border-color:var(--accent2);background:rgba(67,97,238,0.08);transform:translateX(3px);}
+.opt-l{min-width:1.5rem;height:1.5rem;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--text2);flex-shrink:0;margin-top:0.05rem;transition:all 0.15s;}
+.opt.correct{border-color:var(--correct);background:rgba(6,214,160,0.1);}
+.opt.correct .opt-l{background:var(--correct);color:#0f0f13;}
+.opt.wrong{border-color:var(--wrong);background:rgba(230,57,70,0.1);}
+.opt.wrong .opt-l{background:var(--wrong);color:white;}
+.opt:disabled{cursor:default;}
+.expl{margin-top:1.25rem;padding:1rem 1.25rem;border-radius:8px;font-size:0.88rem;line-height:1.6;display:none;border-left:3px solid;}
+.expl.ok{background:rgba(6,214,160,0.08);border-color:var(--correct);color:#a0f0df;}
+.expl.ko{background:rgba(230,57,70,0.08);border-color:var(--wrong);color:#ffaaaa;}
+.expl strong{color:var(--text);}
+.expl.show{display:block;}
+.btn-next{display:none;margin-top:1.25rem;padding:0.75rem 2rem;background:var(--accent2);color:white;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;text-transform:uppercase;}
+.btn-next:hover{background:#5a74f0;transform:translateY(-1px);}
+.btn-next.show{display:inline-block;}
+/* RESULTS */
+#results{display:none;text-align:center;padding:3rem 2rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);}
+#results h2{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:0.5rem;}
+.score-big{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;margin:1.5rem 0;}
+.score-big.excellent{color:var(--correct);} .score-big.good{color:var(--warn);} .score-big.bad{color:var(--wrong);}
+.res-msg{color:var(--text2);font-size:1rem;margin-bottom:2rem;}
+.res-bd{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin:2rem 0;text-align:left;}
+.bd-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1rem;}
+.bd-cat{font-size:0.75rem;color:var(--text2);margin-bottom:0.25rem;}
+.bd-score{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;}
+.bd-score.p{color:var(--correct);} .bd-score.g{color:var(--warn);} .bd-score.b{color:var(--wrong);}
+.btn-r{padding:0.9rem 2.5rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;margin:0.5rem;}
+.btn-r:hover{transform:translateY(-2px);}
+.btn-r.sec{background:var(--bg3);border:1px solid var(--border);}
+/* WELCOME */
+#welcome{text-align:center;padding:3rem 2rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);}
+#welcome h2{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:0.5rem;}
+#welcome p{color:var(--text2);margin-bottom:2rem;font-size:0.95rem;}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+.mode-card{background:var(--bg3);border:2px solid var(--border);border-radius:10px;padding:1.25rem;cursor:pointer;transition:all 0.2s;text-align:center;}
+.mode-card:hover,.mode-card.sel{border-color:var(--accent2);background:rgba(67,97,238,0.1);}
+.mode-icon{font-size:2rem;margin-bottom:0.5rem;}
+.mode-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;}
+.mode-desc{font-size:0.75rem;color:var(--text2);margin-top:0.25rem;}
+.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-bottom:2rem;}
+.topic-btn{padding:0.7rem 1rem;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:0.82rem;cursor:pointer;transition:all 0.15s;text-align:left;}
+.topic-btn.sel,.topic-btn:hover{border-color:var(--accent2);color:var(--text);background:rgba(67,97,238,0.1);}
+.topic-btn.sel::before{content:"✓ ";color:var(--correct);}
+.btn-start{padding:1rem 3rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;cursor:pointer;letter-spacing:0.05em;text-transform:uppercase;transition:all 0.2s;}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(230,57,70,0.3);}
+/* PASSWORD */
+#pw-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+.pw-icon{font-size:3rem;margin-bottom:1rem;}
+#pw-screen h2{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:0.5rem;text-align:center;}
+#pw-screen p{color:var(--text2);font-size:0.9rem;margin-bottom:2rem;text-align:center;}
+.pw-form{display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%;max-width:320px;}
+.pw-input{width:100%;padding:0.9rem 1.25rem;background:var(--bg2);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.2em;text-align:center;outline:none;transition:border-color 0.2s;}
+.pw-input:focus{border-color:var(--accent2);}
+.pw-input.err{border-color:var(--wrong);animation:shake 0.4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.pw-btn{width:100%;padding:0.9rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.pw-btn:hover{transform:translateY(-2px);}
+.pw-err{color:var(--wrong);font-size:0.82rem;display:none;}
+.pw-err.show{display:block;}
+.pw-hint{margin-top:1.5rem;padding:0.75rem 1.25rem;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:0.8rem;color:var(--text2);text-align:center;max-width:320px;}
+@media(max-width:600px){.mode-grid{grid-template-columns:1fr}.res-bd{grid-template-columns:1fr}header{padding:0.75rem 1rem}main{padding:1.5rem 1rem 3rem}}
+</style>
+</head>
+<body>
+<div id="pw-screen">
+  <div class="pw-icon">🔒</div>
+  <h2>Accès réservé</h2>
+  <p>Entrez le code d'accès pour commencer</p>
+  <div class="pw-form">
+    <input type="password" class="pw-input" id="pw-input" placeholder="Code d'accès" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter')checkPW()"/>
+    <div class="pw-err" id="pw-err">Code incorrect.</div>
+    <button class="pw-btn" onclick="checkPW()">→ Accéder</button>
+  </div>
+  <div class="pw-hint">💡 Ce QCM vous est exclusivement destiné.<br>Examen le <strong>samedi 16 mai 2026</strong> à 9h30 · Liège · <strong>Bonne chance !</strong> 🥊</div>
+</div>
+<header>
+  <h1>QCM <span class="dco">DCO</span> — Entraînement Intensif <span class="v-badge">v4.0</span></h1>
+  <div class="hdr-right">
+    <button class="prog-btn" onclick="toggleProg()">📈 Progrès</button>
+    <div class="hdr-stats">
+      <div>Q <strong id="hq">—</strong></div>
+      <div>✓ <strong id="hok" style="color:var(--correct)">—</strong></div>
+      <div>✗ <strong id="hko" style="color:var(--wrong)">—</strong></div>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+  <div id="prog-screen">
+    <div class="prog-title">📈 Mes progrès</div>
+    <div class="prog-stats" id="pstats"></div>
+    <div class="trend-wrap"><div class="trend-top">10 dernières sessions</div><div class="trend-bar" id="tbar"></div></div>
+    <div class="sess-list" id="slist"></div>
+    <button class="btn-clear" onclick="clearProg()">🗑️ Effacer l'historique</button>
+  </div>
+  <div id="welcome">
+    <h2>Entraînement intensif <span style="color:var(--accent);font-size:0.9rem;">v4.0</span></h2>
+    <p>184 questions · Réponses bien dispersées · Distracteurs crédibles · Niveau intensif<br>Choisissez votre mode et vos thèmes.</p>
+    <p style="font-size:0.8rem;color:var(--text2);margin-bottom:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Mode</p>
+    <div class="mode-grid">
+      <div class="mode-card sel" data-mode="all" onclick="selMode(this)"><div class="mode-icon">🎯</div><div class="mode-name">Tout</div><div class="mode-desc">184 questions</div></div>
+      <div class="mode-card" data-mode="random30" onclick="selMode(this)"><div class="mode-icon">⚡</div><div class="mode-name">Sprint 30</div><div class="mode-desc">30 questions aléatoires</div></div>
+      <div class="mode-card" data-mode="mistakes" onclick="selMode(this)"><div class="mode-icon">🔁</div><div class="mode-name">Erreurs</div><div class="mode-desc">Réviser vos erreurs</div></div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text2);margin-bottom:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Thèmes</p>
+    <div class="topic-grid">
+      <button class="topic-btn sel" data-topic="pacte" onclick="togTopic(this)">📘 Pacte pour un Enseignement d'Excellence</button>
+      <button class="topic-btn sel" data-topic="system" onclick="togTopic(this)">📗 Système éducatif FWB</button>
+      <button class="topic-btn sel" data-topic="etab" onclick="togTopic(this)">📙 Fonctionnement des établissements</button>
+      <button class="topic-btn sel" data-topic="systheo" onclick="togTopic(this)">🔬 Analyse systémique</button>
+      <button class="topic-btn sel" data-topic="dco" onclick="togTopic(this)">🏛️ Statut & Missions DCO</button>
+      <button class="topic-btn sel" data-topic="pilotage" onclick="togTopic(this)">📋 Plan de pilotage & Indicateurs</button>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Commencer l'entraînement →</button>
+  </div>
+  <div id="quiz" style="display:none"></div>
+  <div id="results">
+    <h2>Résultats</h2>
+    <div class="score-big" id="sbig"></div>
+    <div class="res-msg" id="rmsg"></div>
+    <div class="res-bd" id="rbd"></div>
+    <button class="btn-r" onclick="restartAll()">🔁 Recommencer</button>
+    <button class="btn-r sec" onclick="revMistakes()">❌ Réviser mes erreurs</button>
+    <button class="btn-r sec" onclick="showWelcome()">🏠 Accueil</button>
+  </div>
+</main>
+<script>
+const ALL_Q=[
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le Pacte pour un Enseignement d'Excellence est qualifié de réforme 'systémique'. Qu'est-ce que cela implique concrètement ?",
+  "opts": [
+   "A. Elle porte uniquement sur les programmes scolaires et les référentiels de compétences",
+   "B. Elle concerne exclusivement l'enseignement secondaire, niveau le plus problématique selon PISA",
+   "C. Elle agit simultanément sur toutes les dimensions du système éducatif : curricula, gouvernance, formation, structures et financement",
+   "D. Elle est mise en œuvre progressivement par niveau, en commençant par le fondamental"
+  ],
+  "ans": 2,
+  "exp": "Le Pacte est systémique car il agit <strong>simultanément sur toutes les dimensions</strong> du système : curricula (tronc commun), gouvernance (plans de pilotage), formation (FPC), structures (inclusion, qualifiant) et financement (discriminations positives). Ce n'est pas sectoriel."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Dans l'Avis n°1 du Groupe central (juillet 2015), quel problème est identifié comme le plus structurel du système éducatif FWB ?",
+  "opts": [
+   "A. La corrélation très forte entre l'origine socio-économique d'un élève et ses résultats scolaires",
+   "B. Le manque de moyens financiers alloués aux établissements défavorisés",
+   "C. L'absence de formation initiale solide pour les enseignants débutants",
+   "D. La prolifération des options dans l'enseignement qualifiant au détriment de la qualité"
+  ],
+  "ans": 0,
+  "exp": "Le problème le plus structurel identifié dans l'Avis n°1 est la <strong>très forte corrélation entre l'origine socio-économique et les résultats scolaires</strong>. La FWB figure parmi les systèmes les plus inégalitaires selon PISA. C'est cet enjeu d'équité qui justifie la réforme systémique."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "L'Avis n°3 du Groupe central est signé le 7 mars 2017 mais adopté le 22 mars 2017. Quelle est la date qui figure dans la circulaire 9669 comme référence documentaire ?",
+  "opts": [
+   "A. Le 22 mars 2017 (date d'adoption formelle par le Groupe central élargi)",
+   "B. Le 24 juillet 2017 (date de publication au Moniteur belge)",
+   "C. Le 13 septembre 2018 (date du décret SGPE qui l'opérationnalise)",
+   "D. Le 07 mars 2017 (date mentionnée explicitement dans la circulaire 9669)"
+  ],
+  "ans": 3,
+  "exp": "La circulaire 9669 cite explicitement la date du <strong>07/03/2017</strong> pour l'Avis n°3 du Groupe central. C'est la date de signature par le Groupe central, même si l'adoption formelle a eu lieu le 22/03/2017. Les deux dates existent mais la circulaire retient le 07/03."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Quel axe du Pacte est directement à l'origine de la création des fonctions DCO et DZ ?",
+  "opts": [
+   "A. Axe 1 — Savoirs et compétences du 21e siècle (tronc commun polytechnique)",
+   "B. Axe 2 — Autonomie et responsabilisation des acteurs (pilotage par contrats d'objectifs)",
+   "C. Axe 4 — Mixité sociale et inclusion des élèves à besoins spécifiques",
+   "D. Axe 5 — Bien-être à l'école et rythmes scolaires"
+  ],
+  "ans": 1,
+  "exp": "C'est l'<strong>Axe 2</strong> (autonomie et responsabilisation) qui génère le système de pilotage par contrats d'objectifs et donc la création des fonctions DCO et DZ. Le DCO est l'opérateur concret de cet axe : il accompagne l'autonomie des écoles en les responsabilisant vis-à-vis des OA collectifs."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Les 7 objectifs d'amélioration (OA) du Pacte sont inscrits formellement dans :",
+  "opts": [
+   "A. Le Code de l'enseignement fondamental et secondaire (Livre 1, adopté le 03/05/2019)",
+   "B. Le décret du 13 septembre 2018 portant création du SGPE",
+   "C. L'Avis n°3 du Groupe central uniquement (document non légalement contraignant)",
+   "D. L'AGCF du 22 mai 2019 portant exécution de l'article 144 du décret 2018"
+  ],
+  "ans": 0,
+  "exp": "Les 7 OA sont formellement inscrits dans le <strong>Code de l'enseignement fondamental et secondaire (Livre 1)</strong>, adopté le 03/05/2019, entré en vigueur le 01/09/2020. Ils avaient d'abord été définis dans l'Avis n°3, mais c'est le Code qui leur donne force légale."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "L'OA4 vise à réduire le redoublement et le décrochage. La valeur de référence officielle pour le redoublement en secondaire est :",
+  "opts": [
+   "A. Passer de 12% à 9% d'ici 2030 (réduction d'un quart)",
+   "B. Passer de 12% à 3% d'ici 2030 (réduction de 75%)",
+   "C. Atteindre la moyenne européenne de 8% d'ici 2025",
+   "D. Passer de 12% à 6% d'ici 2030 (réduction de moitié)"
+  ],
+  "ans": 3,
+  "exp": "La valeur de référence de l'OA4.1 est une <strong>diminution de 50% du redoublement</strong> : passer de 12% à <strong>6%</strong> dans l'enseignement secondaire d'ici 2030. En primaire : de 3% à 1,5%. C'est une réduction de moitié, pas de 75% ni d'un quart."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le tronc commun est qualifié de 'polytechnique'. Concrètement, cela se traduit par l'introduction obligatoire de :",
+  "opts": [
+   "A. Cours de programmation et d'intelligence artificielle dès la 1re primaire",
+   "B. Stages en entreprise obligatoires dès la 3e secondaire pour tous les élèves",
+   "C. La FMTTN (Formation Manuelle, Technique, Technologique et Numérique) dans le cursus de tous les élèves",
+   "D. L'apprentissage d'au moins deux langues modernes dès la 2e maternelle"
+  ],
+  "ans": 2,
+  "exp": "Le caractère polytechnique se concrétise par l'introduction de la <strong>FMTTN</strong> (Formation Manuelle, Technique, Technologique et Numérique) dans le tronc commun pour tous les élèves, quelle que soit leur orientation future. Elle vise à développer des compétences pratiques et numériques universelles."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Selon la procédure art. 67, après que le DCO a émis des recommandations motivées, l'établissement dispose de 40 jours pour renvoyer un plan adapté. Ces 40 jours sont des jours :",
+  "opts": [
+   "A. Jours calendrier (week-ends et jours fériés inclus)",
+   "B. Jours ouvrables scolaires (hors week-ends, jours fériés et vacances scolaires)",
+   "C. Jours ouvrables administratifs (hors week-ends et jours fériés)",
+   "D. Jours de présence effective des élèves dans l'établissement"
+  ],
+  "ans": 1,
+  "exp": "Les 40 jours sont des <strong>jours ouvrables scolaires</strong> — c'est-à-dire hors week-ends, jours fériés ET vacances scolaires. C'est différent des 60 jours du DCO qui sont des jours calendrier. Cette distinction est importante pour calculer les délais réels."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Lors de l'évaluation intermédiaire à 3 ans, le DCO constate que l'école a mis en œuvre ses stratégies mais n'a pas progressé vers ses objectifs. Quelle est l'approche correcte ?",
+  "opts": [
+   "A. Engager un dialogue constructif pour comprendre les causes et envisager des ajustements des stratégies, sans sanction car l'obligation est de moyens",
+   "B. Déclencher immédiatement le dispositif de l'art. 68 car les résultats sont insuffisants",
+   "C. Réduire les ressources allouées à l'école pour responsabiliser le PO",
+   "D. Imposer de nouveaux objectifs plus réalistes en tenant compte des résultats obtenus"
+  ],
+  "ans": 0,
+  "exp": "L'approche correcte est le <strong>dialogue constructif</strong> pour comprendre les causes et ajuster les stratégies. L'obligation est de <strong>moyens</strong>, pas de résultats. La non-atteinte des objectifs ne déclenche pas de sanction si les stratégies ont été mises en œuvre sincèrement. L'art. 68 ne s'applique que si les performances sont significativement en dessous de la moyenne des comparables."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "L'OA6 vise à augmenter l'inclusion. Sa valeur de référence 6.1 est de :",
+  "opts": [
+   "A. Intégrer 50% des élèves du spécialisé dans l'ordinaire d'ici 2030",
+   "B. Réduire de 30% les orientations vers le spécialisé d'ici 2025",
+   "C. Doubler le nombre d'élèves intégrés dans l'ordinaire d'ici 2028",
+   "D. Revenir en 2030 au pourcentage d'élèves dans le spécialisé tel qu'il était en 2004"
+  ],
+  "ans": 3,
+  "exp": "L'OA6.1 vise à <strong>revenir en 2030 au pourcentage d'élèves pris en charge dans le spécialisé tel qu'il était en 2004</strong>. Ce pourcentage a augmenté depuis lors — l'objectif est donc de revenir à ce niveau plus faible, en favorisant l'inclusion dans l'ordinaire."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Une école propose dans son plan de pilotage un objectif ambitieux sur l'OA1 mais dont le diagnostic ne justifie pas l'ambition (ses résultats sont déjà au-dessus de la moyenne). Le DCO doit :",
+  "opts": [
+   "A. Approuver le plan car les objectifs ambitieux sont toujours valorisés",
+   "B. Signaler une possible erreur manifeste d'appréciation : l'ambition doit être contextuelle et correspondre à la situation réelle de l'école",
+   "C. Refuser le plan car l'OA1 n'est pas prioritaire pour les écoles performantes",
+   "D. Demander à l'école de se fixer des objectifs sur les OA où elle est en dessous de la moyenne"
+  ],
+  "ans": 1,
+  "exp": "Le DCO doit signaler une <strong>erreur manifeste d'appréciation</strong> : les objectifs doivent être réalistes ET cohérents avec la situation de l'école. Une école déjà performante sur l'OA1 n'a pas besoin d'un objectif très ambitieux dans ce domaine. L'ambition doit être contextuelle — ni trop faible, ni déconnectée de la réalité."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le plan de pilotage doit contenir des stratégies transversales obligatoires. Parmi les suivantes, laquelle N'EST PAS une stratégie transversale obligatoire ?",
+  "opts": [
+   "A. L'ouverture de l'école à des partenaires culturels et associatifs extérieurs",
+   "B. Le travail collaboratif entre enseignants",
+   "C. La formation professionnelle continue des équipes",
+   "D. La mise en œuvre du tronc commun polytechnique"
+  ],
+  "ans": 0,
+  "exp": "L'ouverture à des partenaires extérieurs est une <strong>bonne pratique mais pas une stratégie transversale obligatoire</strong>. Les 3 obligatoires sont : travail collaboratif, FPC des équipes, et mise en œuvre du tronc commun. Cette ouverture figure dans certaines thématiques du plan mais n'est pas imposée comme stratégie transversale."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "La 'redevabilité' (accountability) dans le Pacte signifie pour une école :",
+  "opts": [
+   "A. L'obligation de rembourser les subventions non utilisées en fin de contrat d'objectifs",
+   "B. La publication annuelle obligatoire de ses résultats aux épreuves externes sur son site web",
+   "C. L'obligation de rendre compte de ses démarches et de leurs effets, en échange d'une autonomie accrue",
+   "D. La responsabilité pénale du directeur en cas de non-atteinte des objectifs chiffrés"
+  ],
+  "ans": 2,
+  "exp": "La redevabilité signifie l'<strong>obligation de rendre compte de ses démarches et de leurs effets</strong> vis-à-vis des parties prenantes, en échange d'une autonomie accrue. C'est l'équilibre fondamental du Pacte : plus d'autonomie pour les écoles, mais une responsabilisation via le contrat d'objectifs."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Quelle est la principale différence entre le 'projet d'établissement' (décret Missions 1997) et le 'plan de pilotage' (décret 2018) ?",
+  "opts": [
+   "A. Le projet d'établissement est élaboré par le PO seul, le plan de pilotage par l'équipe éducative seule",
+   "B. Le plan de pilotage remplace totalement le projet d'établissement depuis 2020",
+   "C. Le projet d'établissement porte sur les valeurs, le plan de pilotage sur les performances uniquement",
+   "D. Le plan de pilotage est contractualisé avec la FWB via le DCO, ce qui n'est pas le cas du projet d'établissement"
+  ],
+  "ans": 3,
+  "exp": "La différence fondamentale est que le plan de pilotage est <strong>contractualisé avec la FWB</strong> via le DCO et devient contrat d'objectifs opposable. Le projet d'établissement reste un document interne. Les deux coexistent — le plan doit être cohérent avec le projet éducatif du PO."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "L'auto-évaluation annuelle dans le cadre du contrat d'objectifs est réalisée par l'école. Concernant sa transmission au DCO, quelle affirmation est exacte ?",
+  "opts": [
+   "A. Elle est transmise au DCO chaque année en septembre pour contrôle de la mise en œuvre",
+   "B. Elle est confidentielle et à usage interne uniquement — le DCO n'y a pas accès",
+   "C. Elle est transmise au DCO uniquement si elle révèle des problèmes significatifs",
+   "D. Elle est transmise au DCO à mi-parcours (après 3 ans) pour préparer l'évaluation intermédiaire"
+  ],
+  "ans": 1,
+  "exp": "L'auto-évaluation annuelle est <strong>confidentielle et à usage interne uniquement</strong>. Le DCO n'y a pas accès. C'est un outil d'autorégulation interne de l'école. Seules les évaluations formelles à 3 ans et à 6 ans impliquent une intervention du DCO."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le tronc commun sera entièrement déployé jusqu'en 3e secondaire en :",
+  "opts": [
+   "A. 2028",
+   "B. 2025",
+   "C. 2030",
+   "D. 2026"
+  ],
+  "ans": 0,
+  "exp": "Le déploiement progressif du tronc commun se termine en <strong>2028</strong> avec la 3e secondaire. Il a débuté en maternelle en 2020 et s'étend année après année. L'horizon du Pacte est 2030 mais le tronc commun est finalisé en 2028."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Un directeur affirme que son école n'a pas besoin d'objectif sur l'OA7 (bien-être) car ses enseignants sont satisfaits. Le DCO constate que le taux d'absentéisme des élèves est significativement supérieur à la moyenne des comparables. Que doit faire le DCO ?",
+  "opts": [
+   "A. Accepter l'argument du directeur car le bien-être des enseignants est un indicateur valide",
+   "B. Imposer un objectif sur l'OA7 car le DCO a le pouvoir de définir les objectifs de l'école",
+   "C. Signaler l'incohérence entre le diagnostic (absentéisme élevé) et l'absence d'objectif sur le bien-être des élèves",
+   "D. Transmettre à l'Inspection car le taux d'absentéisme dépasse la norme légale"
+  ],
+  "ans": 2,
+  "exp": "Le DCO doit <strong>signaler l'incohérence</strong> entre les indicateurs (absentéisme élevé = signal de bien-être problématique) et l'absence d'objectif sur ce point. C'est une erreur manifeste d'appréciation dans le diagnostic. Le DCO ne fixe pas les objectifs à la place de l'école, mais il invite l'école à prendre en compte cette dimension."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le Pacte a identifié que l'enseignement qualifiant souffrait d'une image de 'filière de relégation'. Quel OA cible directement ce problème ?",
+  "opts": [
+   "A. OA1 — Améliorer les savoirs et compétences des élèves",
+   "B. OA3 — Réduire les inégalités liées au statut socio-économique",
+   "C. OA5 — Réduire les changements d'établissement dans le tronc commun",
+   "D. OA2 — Augmenter la part des jeunes diplômés du secondaire supérieur"
+  ],
+  "ans": 3,
+  "exp": "L'<strong>OA2</strong> (augmenter la part des diplômés du secondaire supérieur) cible directement ce problème car valoriser le qualifiant comme filière d'excellence (Axe 3) doit conduire à ce que davantage de jeunes obtiennent leur diplôme — qu'il soit via la transition ou la qualification. L'OA2 mesure ce résultat global."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le contrat d'objectifs impose une 'obligation de moyens'. Dans le cadre de l'évaluation finale à 6 ans, le DCO évalue :",
+  "opts": [
+   "A. L'atteinte chiffrée des cibles définies dans le contrat d'objectifs",
+   "B. La sincérité et la cohérence de la mise en œuvre des stratégies définies",
+   "C. La progression de l'école par rapport à la moyenne des établissements comparables",
+   "D. La conformité du plan d'action aux 7 OA nationaux du Pacte"
+  ],
+  "ans": 1,
+  "exp": "Le DCO évalue la <strong>sincérité et la cohérence de la mise en œuvre</strong> des stratégies définies. Ce n'est pas une évaluation de l'atteinte des cibles chiffrées (obligation de résultats) ni une comparaison avec d'autres écoles. L'obligation de moyens signifie : 'Avez-vous vraiment fait ce que vous aviez dit faire ?'"
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Les nouvelles disciplines introduites par le tronc commun sont au nombre de trois. Lesquelles ?",
+  "opts": [
+   "A. FMTTN, PECA, et Formation économique et sociale",
+   "B. FMTTN, éducation physique renforcée, et langues modernes dès la maternelle",
+   "C. Philosophie, FMTTN, et éducation aux médias",
+   "D. PECA, sciences appliquées, et formation citoyenne"
+  ],
+  "ans": 0,
+  "exp": "Les trois nouvelles disciplines/domaines du tronc commun sont : la <strong>FMTTN</strong> (Formation Manuelle, Technique, Technologique et Numérique), le <strong>PECA</strong> (Parcours d'Éducation Culturelle et Artistique), et la <strong>Formation économique et sociale</strong>."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Un établissement soumet un plan contenant 7 objectifs spécifiques très détaillés. Le DCO doit :",
+  "opts": [
+   "A. Approuver le plan car plus d'objectifs signifie plus d'ambition",
+   "B. Refuser le plan car seuls 5 objectifs maximum sont légalement autorisés",
+   "C. Recommander à l'école de recentrer son plan sur 3 à 5 objectifs, car trop d'objectifs dispersent les efforts et réduisent l'impact systémique",
+   "D. Accepter le plan en demandant à l'école de prioriser les 3 plus importants sans supprimer les autres"
+  ],
+  "ans": 2,
+  "exp": "Le DCO doit <strong>recommander de recentrer sur 3 à 5 objectifs</strong>. Trop d'objectifs dispersent les efforts et réduisent l'impact systémique de chaque stratégie. C'est une bonne pratique définie dans le guide PILOTAGE (Vol.1) — pas une interdiction légale stricte, mais une recommandation que le DCO peut émettre."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Selon Cavillot (Délégué Coordonnateur SGPE) lors de son audition au Parlement, combien d'actions environ ont été écrites par les écoles dans leurs plans de pilotage ?",
+  "opts": [
+   "A. Environ 10 000 actions pour 2 715 écoles",
+   "B. Environ 30 000 actions pour 2 715 écoles",
+   "C. Environ 100 000 actions pour 2 715 écoles",
+   "D. Environ 60 000 actions pour 2 715 écoles"
+  ],
+  "ans": 3,
+  "exp": "Selon Cavillot : <strong>environ 60 000 actions</strong> ont été écrites par les <strong>2 715 écoles</strong> disposant d'un contrat d'objectifs. Soit une moyenne d'environ 22 actions par école, cohérente avec 3 à 5 objectifs comportant chacun plusieurs actions."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "L'évaluation intermédiaire à 3 ans révèle que l'école a progressé sur 2 objectifs mais a dévié de sa stratégie sur un 3e en raison de l'arrivée massive de primo-arrivants. Le DCO doit :",
+  "opts": [
+   "A. Constater que l'école n'a pas respecté son contrat et mettre en place un suivi rapproché",
+   "B. Reconnaître que de nouveaux défis peuvent justifier de modifier le contrat et accompagner l'adaptation des stratégies",
+   "C. Imposer à l'école de maintenir ses objectifs initiaux quel que soit le contexte",
+   "D. Transmettre à l'Inspection pour auditer la gestion des primo-arrivants"
+  ],
+  "ans": 1,
+  "exp": "Cavillot l'a dit explicitement : <strong>'Si de nouveaux défis surgissent au point de perturber la vie de l'école, il est nécessaire de changer le plan d'action, voire les stratégies.'</strong> La déviation est justifiée par un changement de contexte réel. Le DCO accompagne l'adaptation."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le DAccE (Dossier d'Accompagnement de l'Élève) est un outil introduit par :",
+  "opts": [
+   "A. Le Code de l'enseignement (Livre 2) dans le cadre du tronc commun",
+   "B. Le décret Missions de 1997, article 15 sur l'évaluation formative",
+   "C. Le décret du 13 septembre 2018 sur le pilotage",
+   "D. L'AGCF du 22 mai 2019 portant exécution du décret SGPE"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>DAccE</strong> est introduit par le <strong>Code de l'enseignement (Livre 2)</strong> dans le cadre du tronc commun. Il accompagne l'élève de la maternelle à la fin de la 3e secondaire et assure la continuité du suivi individualisé à travers les transitions."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le PECA (Parcours d'Éducation Culturelle et Artistique) se distingue des anciens cours d'arts plastiques par :",
+  "opts": [
+   "A. Il est obligatoire dès la 1re maternelle alors que les arts plastiques commençaient en primaire",
+   "B. Il est commun à tous les réseaux alors que les arts plastiques variaient selon les projets éducatifs",
+   "C. Il est évalué par des épreuves externes alors que les arts plastiques n'étaient pas évalués",
+   "D. Il crée un parcours continu de la maternelle jusqu'à la fin de la scolarité ET ouvre l'école sur son environnement culturel local"
+  ],
+  "ans": 3,
+  "exp": "Le PECA se distingue par son caractère de <strong>parcours continu</strong> (maternelle → fin de scolarité) et par son objectif d'<strong>ouvrir l'école sur son environnement culturel</strong> (partenariats avec institutions culturelles). Ce n'est pas juste un cours d'arts plastiques renommé — c'est une approche systémique de l'éducation culturelle."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "La 'différenciation des apprentissages' dans le tronc commun vise à :",
+  "opts": [
+   "A. Créer des filières différenciées dès le primaire selon le niveau des élèves",
+   "B. Adapter les pratiques pédagogiques aux besoins de chaque élève sans créer de groupes de niveau",
+   "C. Organiser des classes séparées pour les élèves en difficulté afin de mieux les aider",
+   "D. Permettre aux élèves avancés de passer en classe supérieure plus tôt"
+  ],
+  "ans": 1,
+  "exp": "La différenciation consiste à <strong>adapter les pratiques pédagogiques aux besoins de chaque élève sans créer de groupes de niveau</strong>. Les groupes de niveau reproduisent les inégalités. C'est une approche intra-classe, pas une filiarisation."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "L'OA3 mesure la réduction des inégalités socio-économiques par un indicateur spécifique. Lequel ?",
+  "opts": [
+   "A. La différence de résultats aux tests PISA entre élèves favorisés et défavorisés (cible : passer de 112 à 101 points)",
+   "B. Le ratio entre le revenu moyen des familles des meilleurs et des moins bons élèves",
+   "C. Le taux d'élèves défavorisés obtenant le CESS (cible : atteindre 70% d'ici 2030)",
+   "D. L'écart-type des résultats entre établissements classés 1 et 10 selon l'ISE"
+  ],
+  "ans": 0,
+  "exp": "L'OA3 est mesuré par la <strong>différence de résultats aux tests PISA</strong> entre élèves favorisés et défavorisés. La valeur de référence : passer de <strong>112 points à 101 points</strong> de différence d'ici 2030 (atteindre la moyenne des pays voisins)."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Qui préside les instances locales d'inscription en 1re secondaire, telles que prévues par le Code de l'enseignement (Livre 1, Titre VII) ?",
+  "opts": [
+   "A. Le DCO de la zone concernée",
+   "B. Le bourgmestre de la commune d'implantation de l'école",
+   "C. Le Directeur de zone (DZ)",
+   "D. Un représentant de l'Administration générale de l'Enseignement"
+  ],
+  "ans": 2,
+  "exp": "Les instances locales d'inscription sont présidées par le <strong>Directeur de zone (DZ)</strong>. C'est l'une des missions spécifiques du DZ — distincte de celles du DCO. Ces instances gèrent les cas de saturation des écoles et l'application des règles de priorité d'inscription."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le plan de pilotage doit être soumis aux OLCS pour avis. Si les OLCS rendent un avis négatif motivé, le PO :",
+  "opts": [
+   "A. Doit obligatoirement revoir le plan avant de le soumettre au DCO",
+   "B. Peut soumettre le plan au DCO uniquement si le DCO valide d'abord l'avis négatif des OLCS",
+   "C. Ne peut pas soumettre le plan au DCO tant que l'avis des OLCS n'est pas positif",
+   "D. Peut soumettre le plan au DCO malgré l'avis négatif, celui-ci étant consultatif et non contraignant"
+  ],
+  "ans": 3,
+  "exp": "L'avis des OLCS (comme celui du CoPa) est <strong>consultatif</strong> : le PO peut soumettre le plan au DCO même en cas d'avis négatif. Toutefois, le DCO prend connaissance des avis émis et peut en tenir compte dans son analyse. La date et le compte-rendu de consultation doivent être encodés dans l'application PILOTAGE."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "L'obligation scolaire commence désormais à l'âge de :",
+  "opts": [
+   "A. 6 ans (1re primaire) — inchangé depuis la loi de 1983",
+   "B. 5 ans (3e maternelle) — depuis la loi du 23 mars 2019, en vigueur dès 2020-2021",
+   "C. 4 ans (2e maternelle) — depuis le Pacte pour un Enseignement d'Excellence",
+   "D. 3 ans (1re maternelle) — depuis l'arrêté du Gouvernement du 22 mai 2019"
+  ],
+  "ans": 1,
+  "exp": "Depuis la loi du <strong>23 mars 2019</strong>, en vigueur dès la rentrée <strong>2020-2021</strong>, l'obligation scolaire commence à <strong>5 ans</strong> (3e maternelle). Avant cette réforme, elle commençait à 6 ans. Ce changement reflète l'importance accordée à la maternelle dans l'Axe 1 du Pacte."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "La loi du 29 mai 1959 (Pacte scolaire) résulte d'un accord politique tripartite. Quelles sont les trois formations politiques signataires ?",
+  "opts": [
+   "A. PSC (catholique), Parti libéral et Rassemblement wallon",
+   "B. PSB (socialiste), PCB (communiste) et PSC (catholique)",
+   "C. PSC (catholique), PSB (socialiste) et Parti libéral",
+   "D. Parti libéral, PSB (socialiste) et FDF (Front des Francophones)"
+  ],
+  "ans": 2,
+  "exp": "L'accord de novembre 1958 qui mène à la loi du 29 mai 1959 est signé par les trois grandes familles politiques belges de l'époque : <strong>PSC (Parti Social-Chrétien), PSB (Parti Socialiste Belge) et le Parti libéral</strong>. Ce tripartisme explique l'équilibre entre les réseaux d'enseignement."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "L'article 24 de la Constitution belge constitutionnalise les principes du Pacte scolaire. En quelle année cette constitutionnalisation a-t-elle eu lieu ?",
+  "opts": [
+   "A. 1959 (lors de la signature du Pacte scolaire)",
+   "B. 1970 (lors de la 1re révision constitutionnelle belge)",
+   "C. 1980 (lors du transfert de compétences aux communautés)",
+   "D. 1989 (lors du transfert de l'enseignement aux communautés)"
+  ],
+  "ans": 3,
+  "exp": "Les principes du Pacte scolaire ont été inscrits à l'article 24 de la Constitution en <strong>1989</strong>, lors du transfert de compétences en matière d'enseignement aux communautés. C'est à ce moment que la liberté d'enseignement, la neutralité, le libre choix et la gratuité ont reçu une protection constitutionnelle."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Dans le décret Missions du 24 juillet 1997, la définition de 'compétence' (art. 5) inclut trois éléments. Lesquels ?",
+  "opts": [
+   "A. Savoirs, savoir-faire et attitudes",
+   "B. Connaissances, habiletés et valeurs",
+   "C. Savoirs déclaratifs, procéduraux et conditionnels",
+   "D. Compétences disciplinaires, transversales et citoyennes"
+  ],
+  "ans": 0,
+  "exp": "L'art. 5 du décret Missions définit la compétence comme une aptitude à mobiliser un ensemble organisé de <strong>savoirs, savoir-faire et attitudes</strong>. Cette définition tripartite est fondamentale et a été reprise dans le Code de l'enseignement."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Les 'compétences terminales' du décret Missions s'appliquent à la section de transition. Pour la section de qualification, le référentiel équivalent est :",
+  "opts": [
+   "A. Les socles de compétences étendus jusqu'à la fin du secondaire",
+   "B. Les profils de formation et savoirs requis définis pour chaque OBG",
+   "C. Les référentiels inter-réseaux du tronc commun adaptés au qualifiant",
+   "D. Les compétences professionnelles définies par les IBEFE dans chaque bassin"
+  ],
+  "ans": 1,
+  "exp": "Pour la section de qualification, ce sont les <strong>profils de formation et les savoirs requis</strong> qui jouent le rôle des compétences terminales. Ces documents définissent les compétences professionnelles attendues pour chaque OBG, en lien avec les besoins du marché de l'emploi."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Les socles de compétences du décret Missions couvrent les 8 premières années de l'obligation scolaire. Cela correspond à :",
+  "opts": [
+   "A. La fin du primaire (6e année primaire)",
+   "B. La fin de la 1re secondaire (7e année de l'obligation scolaire)",
+   "C. La fin de la 2e secondaire (fin du 1er degré secondaire)",
+   "D. La fin de la 3e secondaire (fin du tronc commun)"
+  ],
+  "ans": 2,
+  "exp": "Les 8 premières années de l'obligation scolaire correspondent à la fin de la <strong>2e secondaire</strong> (fin du 1er degré). En comptant : M1-M2-M3 (maternelle) + P1 à P6 (primaire) = 3+6 = 9 années, mais l'obligation commence à 5 ans (3e maternelle), donc 3e mat + P1-P6 + 1S + 2S = 8 années."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Le décret du 14 mars 2019 prévoit une 'indemnité informatique' annuelle. À quelles conditions un enseignant peut-il en bénéficier ?",
+  "opts": [
+   "A. S'il enseigne une matière qui requiert l'usage de l'informatique (FMTTN, sciences...)",
+   "B. S'il dispose d'un ordinateur personnel et le déclare à son PO",
+   "C. S'il utilise les outils numériques mis à disposition par son établissement",
+   "D. S'il utilise ses outils informatiques personnels à des fins professionnelles (préparation de cours, communication...)"
+  ],
+  "ans": 3,
+  "exp": "L'indemnité informatique de <strong>100€/an</strong> est accordée au membre du personnel qui utilise ses <strong>outils informatiques personnels à des fins professionnelles</strong> (préparer des cours sur son propre ordinateur, communiquer avec les parents...). Elle n'est pas automatique et n'est pas liée à la matière enseignée."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Le CoFoPro (Conseil de la Formation Professionnelle Continue) est institué par quel texte ?",
+  "opts": [
+   "A. Le Livre 6 du Code de l'enseignement (décret du 17 juin 2021)",
+   "B. Le décret Missions du 24 juillet 1997",
+   "C. Le décret du 13 septembre 2018 portant création du SGPE",
+   "D. L'AGCF du 22 mai 2019 portant exécution du décret SGPE"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>CoFoPro</strong> est institué par le <strong>Livre 6 du Code de l'enseignement</strong> (décret du 17 juin 2021, en vigueur 2022-2023). Il est l'organe de gouvernance de la FPC interréseaux et supervise l'IFPC."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Dans le cadre du décret 2023 sur les OBG, qu'est-ce qui distingue une 'thématique commune' (TC) d'une 'fonction critique' (FC) ?",
+  "opts": [
+   "A. Les TC sont définies nationalement, les FC sont définies localement par chaque IBEFE",
+   "B. Les TC correspondent aux besoins économiques du bassin, les FC sont des métiers en pénurie bénéficiant de normes encore plus favorables",
+   "C. Les FC sont pour les OBG du 2e degré, les TC pour le 3e degré qualifiant",
+   "D. Les TC nécessitent une certification externe, les FC peuvent se passer de certification"
+  ],
+  "ans": 1,
+  "exp": "Les <strong>TC (Thématiques Communes)</strong> sont des OBG liées aux besoins économiques identifiés dans un bassin EFE — bénéficiant de normes allégées. Les <strong>FC (Fonctions Critiques)</strong> sont des métiers en <strong>pénurie</strong> sur le marché de l'emploi — bénéficiant de normes encore plus favorables (norme de création à 10 élèves en 4e). TC et FC sont deux catégories distinctes."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Dans le cadre de la FPC (Livre 6), les formations interréseaux organisées par l'IFPC représentent :",
+  "opts": [
+   "A. La totalité des 6 demi-jours annuels pendant le temps scolaire",
+   "B. Les deux tiers (4 demi-jours) des formations pendant le temps scolaire",
+   "C. Un quart (1,5 demi-jours) des formations pendant le temps scolaire",
+   "D. Un tiers (2 demi-jours) des formations pendant le temps scolaire"
+  ],
+  "ans": 3,
+  "exp": "Les formations interréseaux (IFPC) représentent <strong>un tiers = 2 demi-jours</strong> sur les 6 demi-jours autorisés pendant le temps scolaire. Les deux tiers restants (4 demi-jours) sont organisés au niveau du réseau."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Le décret du 22 juin 2023 sur les OBG a 'remis les compteurs à zéro'. Que signifie cette expression ?",
+  "opts": [
+   "A. Toutes les OBG existantes ont été supprimées et doivent être recréées selon les nouvelles normes",
+   "B. Les directeurs d'école doivent reformuler toutes leurs options sous de nouveaux codes administratifs",
+   "C. Les années de non-conformité aux normes accumulées avant l'entrée en vigueur du décret 2023 ne comptent plus",
+   "D. Les IBEFE recommencent leur inventaire des besoins locaux à partir de zéro"
+  ],
+  "ans": 2,
+  "exp": "La remise à zéro signifie que les <strong>années de non-conformité accumulées avant l'entrée en vigueur du décret 2023 ne comptent plus</strong>. On repart sur de nouvelles bases, avec de nouvelles normes calculées par implantation. Une OBG en difficulté depuis 2 ans sous l'ancien régime repart à 0."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Selon le décret du 14 mars 2019, la 'charge globale' d'un enseignant comprend 5 composantes. Quelle composante a été introduite comme nouveauté par ce décret ?",
+  "opts": [
+   "A. Le travail collaboratif (concertation pédagogique collective)",
+   "B. Le travail en classe (périodes de 50 minutes)",
+   "C. La formation continue (FPC)",
+   "D. Le service à l'école et aux élèves"
+  ],
+  "ans": 0,
+  "exp": "La composante véritablement <strong>nouvelle</strong> introduite par le décret 2019 est le <strong>travail collaboratif</strong> — obligation formelle de concertation pédagogique collective, directement articulée au plan de pilotage. Les autres composantes existaient déjà de facto mais n'étaient pas formalisées."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Le 'continuum pédagogique' du décret Missions comprend 3 étapes. La 3e étape correspond à :",
+  "opts": [
+   "A. La 5e et 6e primaire (fin de l'enseignement fondamental)",
+   "B. La 3e secondaire (fin du tronc commun)",
+   "C. La 3e et 4e secondaire (2e degré secondaire)",
+   "D. La 1re et 2e secondaire (1er degré secondaire)"
+  ],
+  "ans": 3,
+  "exp": "La 3e étape du continuum pédagogique correspond à la <strong>1re et 2e secondaire</strong> (le 1er degré secondaire). Étape 1 : entrée maternelle → fin 2e primaire. Étape 2 : 3e → 6e primaire. Étape 3 : 1re → 2e secondaire."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Le CPEONS représente les PO de quel réseau dans quelle région ?",
+  "opts": [
+   "A. L'enseignement libre confessionnel dans l'ensemble de la FWB",
+   "B. L'enseignement officiel subventionné neutre à Bruxelles",
+   "C. L'enseignement officiel organisé (WBE) à Bruxelles",
+   "D. L'enseignement libre non confessionnel dans la Région wallonne"
+  ],
+  "ans": 1,
+  "exp": "Le <strong>CPEONS</strong> (Conseil des Pouvoirs Organisateurs de l'Enseignement Officiel Neutre Subventionné) représente les PO de l'<strong>enseignement officiel subventionné neutre à Bruxelles</strong> (communes et COCOF bruxelloises). En Wallonie, c'est l'UVCW qui joue ce rôle."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "La norme générale de maintien d'une OBG en 4-5-6 PE (plein exercice) selon le décret 2023 est calculée sur base de :",
+  "opts": [
+   "A. La moyenne des élèves en 5e et 6e années, calculée par implantation au 15 janvier",
+   "B. Le nombre total d'élèves en 4e, 5e et 6e années cumulées, par école",
+   "C. La moyenne des élèves en 4e, 5e et 6e années, calculée par zone DCO",
+   "D. Le nombre d'élèves en 4e année uniquement, par implantation au 1er octobre"
+  ],
+  "ans": 0,
+  "exp": "La norme est calculée sur la <strong>moyenne des élèves en 5e et 6e années uniquement</strong> (pas la 4e), par <strong>implantation</strong> (et non par école), au <strong>15 janvier</strong>. La 4e est considérée comme une année d'entrée dans le parcours, moins stable que les années suivantes."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "L'article 14 du décret Missions impose aux établissements :",
+  "opts": [
+   "A. D'organiser au moins 2 réunions de parents par année scolaire",
+   "B. De mettre en place des dispositifs de remédiation pour les élèves en difficulté",
+   "C. De faciliter la transition primaire-secondaire par des échanges de documents et des activités en commun",
+   "D. De transmettre les résultats des élèves aux établissements secondaires d'accueil"
+  ],
+  "ans": 2,
+  "exp": "L'<strong>art. 14 du décret Missions</strong> impose aux établissements de faciliter la <strong>transition primaire → secondaire</strong>, notamment par des échanges de documents sur les socles et des activités en commun entre élèves de 6e primaire et 1re secondaire. C'est une obligation légale antérieure au Pacte."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Le Livre 2 du Code de l'enseignement prévoit la suppression progressive du redoublement. Quelle nuance importante est à retenir ?",
+  "opts": [
+   "A. Le redoublement est supprimé à partir de la 1re maternelle uniquement",
+   "B. Il est supprimé dans tout le tronc commun depuis septembre 2020",
+   "C. Il est interdit dans le primaire mais maintenu en 1re et 2e secondaire",
+   "D. Il est supprimé progressivement au fur et à mesure du déploiement du tronc commun, au profit du soutien individualisé"
+  ],
+  "ans": 3,
+  "exp": "La suppression du redoublement est <strong>progressive</strong>, liée au déploiement du tronc commun. Elle ne s'est pas appliquée d'un coup à toutes les années en 2020 — elle suit le calendrier du tronc commun, année après année, jusqu'en 2028. Le redoublement est remplacé par le soutien individualisé et la différenciation."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Le capital-périodes (CP) dans l'enseignement fondamental est calculé sur base des élèves au 15 janvier. Pour l'encadrement maternel, la date de référence est différente. Pourquoi ?",
+  "opts": [
+   "A. Pour permettre aux PO de recruter des enseignants avant la rentrée de septembre",
+   "B. Parce que l'effectif maternel est très instable en début d'année (arrivées progressives), nécessitant une date de comptage plus précoce",
+   "C. Par décision arbitraire du législateur pour simplifier l'administration",
+   "D. Parce que le maternel utilise un système de demi-emplois qui s'ajuste différemment des périodes"
+  ],
+  "ans": 1,
+  "exp": "L'encadrement maternel est calculé au <strong>30 septembre</strong> car l'effectif maternel est très instable en début d'année scolaire : beaucoup d'enfants arrivent progressivement après la rentrée. Le 30 septembre donne une image plus stable et représentative de l'effectif réel de l'année."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Le décret du 30 juin 1998 sur les discriminations positives classe les implantations en 10 classes selon un indice socio-économique. Les classes 1 à 6 bénéficient d'un encadrement différencié. En quoi consiste cet encadrement ?",
+  "opts": [
+   "A. Des périodes d'enseignement supplémentaires permettant remédiation et réduction des groupes",
+   "B. Des subventions financières supplémentaires pour acheter du matériel pédagogique",
+   "C. Des inspecteurs supplémentaires pour surveiller la qualité de l'enseignement",
+   "D. Des aménagements d'infrastructure financés par la FWB"
+  ],
+  "ans": 0,
+  "exp": "L'encadrement différencié consiste en des <strong>périodes d'enseignement supplémentaires</strong> accordées aux implantations des classes 1 à 6. Ces périodes permettent de réduire la taille des groupes, d'organiser de la remédiation ou des activités d'accrochage scolaire — pas des subventions financières directes."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Dans l'enseignement spécialisé, quel type est réservé exclusivement à l'enseignement primaire ?",
+  "opts": [
+   "A. Type 3 (troubles du comportement et de la personnalité)",
+   "B. Type 6 (déficiences visuelles)",
+   "C. Type 8 (troubles instrumentaux : dyslexie, dyscalculie, dysphasie...)",
+   "D. Type 5 (maladie — long séjour hospitalier)"
+  ],
+  "ans": 2,
+  "exp": "Le <strong>type 8</strong> (troubles instrumentaux) n'existe qu'au niveau <strong>primaire spécialisé</strong>. Au secondaire, ces élèves sont orientés vers d'autres types ou maintenus dans l'ordinaire avec aménagements raisonnables. C'est un classique des questions pièges."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "La 'forme 4' de l'enseignement spécialisé secondaire permet d'obtenir le CESS. À quels élèves s'adresse-t-elle ?",
+  "opts": [
+   "A. À tous les élèves de l'enseignement spécialisé secondaire qui en font la demande",
+   "B. Aux élèves des types 1 et 2 (déficiences mentales légères et modérées) qui progressent bien",
+   "C. Aux élèves dont le handicap est exclusivement physique (type 4) ou sensoriel (types 6 et 7)",
+   "D. Aux élèves dont les capacités intellectuelles permettent de suivre un parcours proche de l'enseignement ordinaire"
+  ],
+  "ans": 3,
+  "exp": "La forme 4 s'adresse aux élèves dont les <strong>capacités intellectuelles permettent de suivre un parcours proche de l'ordinaire</strong>, malgré un handicap. Elle peut concerner des élèves de plusieurs types (notamment types 4, 6, 7) mais pas les types 1 et 2 (déficiences mentales modérées à sévères)."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Le 'premier degré différencié' introduit par le décret du 12 décembre 2008 s'adresse aux élèves :",
+  "opts": [
+   "A. Qui souhaitent approfondir certaines matières dès l'entrée en secondaire",
+   "B. Qui n'ont pas obtenu le CEB au terme de la 6e primaire",
+   "C. Qui présentent des troubles du comportement nécessitant un encadrement spécialisé",
+   "D. Qui ont déjà redoublé au moins une année dans le primaire"
+  ],
+  "ans": 1,
+  "exp": "Le 1er degré différencié s'adresse aux élèves qui <strong>n'ont pas obtenu le CEB</strong> au terme de la 6e primaire. Il leur offre une structure adaptée pour acquérir les bases nécessaires avant de rejoindre le parcours ordinaire. C'est une alternative au redoublement et à l'orientation prématurée vers le spécialisé."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Selon le décret du 13 juillet 1998, combien d'augmentations de cadre peuvent avoir lieu en cours d'année scolaire dans l'enseignement maternel ?",
+  "opts": [
+   "A. 4 augmentations (après Toussaint, Noël, Carnaval et Pâques)",
+   "B. 2 augmentations (en octobre et en janvier)",
+   "C. 1 seule augmentation (en janvier, comme pour le CP du primaire)",
+   "D. 6 augmentations (mensuelle dès octobre)"
+  ],
+  "ans": 0,
+  "exp": "Le décret de 1998 prévoit <strong>4 augmentations de cadre</strong> possibles en cours d'année, après chacun des congés scolaires : <strong>Toussaint, Noël, Carnaval et Pâques</strong>. Cela permet d'adapter l'encadrement aux arrivées progressives d'élèves en maternel."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Dans le calcul du NTPP secondaire, les coefficients utilisés varient selon :",
+  "opts": [
+   "A. Le réseau d'appartenance et le profil socio-économique de l'implantation",
+   "B. L'ancienneté des enseignants et le niveau d'études atteint",
+   "C. L'année d'études et l'option suivie par l'élève",
+   "D. La taille de l'établissement et son classement dans le système des discriminations positives"
+  ],
+  "ans": 2,
+  "exp": "Dans le calcul du NTPP, les coefficients varient selon l'<strong>année d'études</strong> (1er, 2e, 3e degré) et l'<strong>option suivie</strong> (une option technique ou professionnelle génère plus de périodes qu'une option générale en raison des dédoublements). Chaque option a son coefficient défini réglementairement."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "L'intégration 'permanente partielle' d'un élève du spécialisé dans l'ordinaire signifie :",
+  "opts": [
+   "A. L'élève est inscrit dans l'ordinaire mais conserve un suivi hebdomadaire par un professionnel du spécialisé",
+   "B. L'élève est inscrit dans l'ordinaire pour toutes les matières sauf les cours spécialisés de remédiation",
+   "C. L'élève alterne une semaine dans l'ordinaire et une semaine dans l'établissement spécialisé",
+   "D. L'élève est inscrit dans l'établissement spécialisé mais fréquente partiellement l'établissement ordinaire"
+  ],
+  "ans": 3,
+  "exp": "Dans l'intégration <strong>permanente partielle</strong>, l'élève reste <strong>inscrit dans l'établissement spécialisé</strong> mais fréquente partiellement l'établissement ordinaire (pour certains cours ou activités). C'est la forme la plus courante — l'élève n'abandonne pas son inscription dans le spécialisé."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Quel décret fixe le statut des directeurs et directrices dans l'enseignement organisé et subventionné par la FWB ?",
+  "opts": [
+   "A. Le décret du 2 février 2007",
+   "B. Le décret du 13 septembre 2018",
+   "C. Le décret Missions du 24 juillet 1997",
+   "D. Le décret du 13 juillet 1998 sur le fondamental"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>décret du 2 février 2007</strong> fixe le statut des directeurs et directrices. Il définit leurs conditions de nomination, leur rôle de chef d'établissement, de pilote pédagogique et d'interlocuteur principal du DCO dans le cadre du plan de pilotage."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Dans le cadre des discriminations positives (décret 1998), qu'est-ce que l'indice socio-économique (ISE) mesure exactement ?",
+  "opts": [
+   "A. Le niveau moyen de revenus des familles des élèves, déclaré annuellement par l'école",
+   "B. Un indice composite calculé par le pouvoir régulateur à partir des données du Registre national (revenus, études, emploi des familles)",
+   "C. Le pourcentage d'élèves bénéficiant d'une allocation d'études dans l'implantation",
+   "D. Le classement de l'école selon ses résultats aux épreuves externes certificatives"
+  ],
+  "ans": 1,
+  "exp": "L'ISE est calculé par le <strong>pouvoir régulateur (FWB)</strong> à partir des <strong>données du Registre national</strong> : revenus des ménages, niveau d'études des parents, taux d'emploi. C'est une donnée objective et externe — l'école n'intervient pas dans ce calcul."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "La 'forme 2' de l'enseignement spécialisé secondaire vise :",
+  "opts": [
+   "A. L'obtention du CESS équivalent à l'enseignement ordinaire",
+   "B. L'obtention d'un certificat de qualification reconnu par les secteurs professionnels",
+   "C. Le développement des aptitudes sociales de base uniquement",
+   "D. La formation professionnelle pratique sans certification qualifiante formelle"
+  ],
+  "ans": 3,
+  "exp": "La <strong>forme 2</strong> vise la <strong>formation professionnelle pratique</strong> sans certification qualifiante formelle (≠ forme 3 qui délivre un certificat de qualification). Elle prépare les élèves à des activités professionnelles simples et à l'autonomie dans la vie quotidienne."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Le type 7 de l'enseignement spécialisé concerne les élèves présentant :",
+  "opts": [
+   "A. Des déficiences visuelles (malvoyance ou cécité)",
+   "B. Des troubles du comportement et de la personnalité",
+   "C. Des déficiences auditives (malentendance ou surdité)",
+   "D. Des troubles instrumentaux spécifiques (dyslexie, dysphasie)"
+  ],
+  "ans": 2,
+  "exp": "Le <strong>type 7</strong> concerne les <strong>déficiences auditives</strong>. Le type 6 = déficiences visuelles. Moyen mnémotechnique : 6 = 'oeil' (deux ronds comme deux yeux) — 7 = auditif (l'oreille se courbe comme un 7 retourné)."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Le NTPP est calculé pour l'année scolaire suivante sur base du nombre d'élèves au :",
+  "opts": [
+   "A. 15 janvier de l'année scolaire en cours",
+   "B. 1er octobre de l'année scolaire en cours",
+   "C. 30 septembre de l'année scolaire en cours",
+   "D. 15 novembre de l'année scolaire en cours"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>NTPP</strong> (comme le CP fondamental) est calculé sur base du nombre d'élèves au <strong>15 janvier de l'année scolaire en cours</strong>. Ce comptage détermine les moyens de l'année scolaire suivante."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Une rétroaction 'positive' dans un système scolaire génère :",
+  "opts": [
+   "A. Nécessairement une amélioration des performances scolaires",
+   "B. Une stabilisation du système autour d'un équilibre optimal",
+   "C. Une réduction des écarts entre établissements favorisés et défavorisés",
+   "D. Une amplification de la cause initiale, pouvant créer une spirale ascendante ou descendante"
+  ],
+  "ans": 3,
+  "exp": "Une rétroaction <strong>positive</strong> <strong>amplifie</strong> la cause initiale — elle peut créer une spirale ascendante (vertueuse) ou descendante (vicieuse). 'Positif' signifie 'qui amplifie', pas 'bénéfique'. Exemple : mauvais résultats → départ des bons élèves → encore moins bons résultats = spirale descendante = rétroaction positive."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Le principe d'équifinalité justifie que le DCO respecte la liberté pédagogique du PO. Pourquoi ?",
+  "opts": [
+   "A. Parce que la loi l'interdit d'imposer ses méthodes, indépendamment de toute considération systémique",
+   "B. Parce que des états finaux identiques (atteindre les mêmes OA) peuvent être atteints par des voies pédagogiques différentes — il n'existe pas de méthode unique obligatoire",
+   "C. Parce que le DCO n'a pas les compétences pédagogiques requises pour évaluer les méthodes des enseignants",
+   "D. Parce que les résultats des épreuves externes prouvent que toutes les méthodes sont équivalentes"
+  ],
+  "ans": 1,
+  "exp": "L'<strong>équifinalité</strong> justifie le respect de la liberté pédagogique : si plusieurs chemins mènent aux mêmes OA, il n'y a pas de raison d'en imposer un seul. Le DCO vérifie la direction (vers les OA) et la cohérence, mais laisse le PO choisir son chemin pédagogique."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Dans un système complexe, les 'effets non-linéaires' signifient que :",
+  "opts": [
+   "A. Les résultats scolaires ne progressent pas régulièrement mais par paliers successifs",
+   "B. Les interventions pédagogiques ont des effets différents selon le moment de l'année scolaire",
+   "C. Une petite cause peut produire un grand effet, ou inversement, selon le contexte des interactions",
+   "D. Les indicateurs du TABOR ne suivent pas une progression linéaire dans le temps"
+  ],
+  "ans": 2,
+  "exp": "La <strong>non-linéarité</strong> signifie qu'<strong>une petite cause peut produire un grand effet</strong> (ou inversement), selon le contexte des interactions. Exemple : un changement de direction peut transformer radicalement le climat scolaire. Ou inversement : un gros investissement dans du matériel sans formation des enseignants peut n'avoir aucun effet."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Un DCO observe qu'une école a des indicateurs TABOR contradictoires : excellents résultats aux épreuves externes mais fort taux d'exclusions disciplinaires. L'analyse systémique suggère de :",
+  "opts": [
+   "A. Investiguer la tension entre performance académique (OA1) et bien-être/inclusion (OA7), car de bons résultats obtenus par sélection implicite ne sont pas durables",
+   "B. Féliciter l'école pour ses résultats et ignorer les exclusions car les données quantitatives priment",
+   "C. Transmettre immédiatement à l'Inspection pour audit des pratiques disciplinaires",
+   "D. Demander à l'école de justifier ses pratiques disciplinaires avant d'analyser le plan de pilotage"
+  ],
+  "ans": 0,
+  "exp": "L'analyse systémique révèle une <strong>tension entre OA1 (résultats) et OA7 (bien-être)</strong>. De bons résultats obtenus via une forte sélection implicite (exclusion des élèves en difficulté) ne reflètent pas une amélioration systémique — ils peuvent même aggraver les inégalités. Le DCO doit investiguer cette tension."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Le 'climat scolaire' est un exemple de phénomène émergent. Cela signifie que :",
+  "opts": [
+   "A. Il peut être créé artificiellement par un directeur charismatique",
+   "B. Il naît des interactions entre tous les acteurs mais n'appartient à aucun d'eux en particulier",
+   "C. Il est principalement déterminé par le contexte socio-économique des familles",
+   "D. Il ne peut être mesuré que par des enquêtes externes réalisées par la FWB"
+  ],
+  "ans": 1,
+  "exp": "Le climat scolaire est <strong>émergent</strong> : il naît des <strong>interactions entre tous les acteurs</strong> (direction, enseignants, élèves, parents) mais ne réside dans aucun d'eux séparément. On ne peut pas 'décréter' un bon climat — il émerge d'un ensemble cohérent d'interactions positives."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Un plan de pilotage contient de bonnes stratégies sur le papier mais elles ne sont pas mises en œuvre en classe. L'explication systémique la plus probable est :",
+  "opts": [
+   "A. Les enseignants manquent de formation pour appliquer les nouvelles méthodes",
+   "B. Le budget alloué aux activités prévues est insuffisant",
+   "C. Les objectifs spécifiques sont trop ambitieux pour être atteints dans ce contexte",
+   "D. La culture organisationnelle implicite (normes non dites, résistances) bloque le transfert des intentions vers la pratique"
+  ],
+  "ans": 3,
+  "exp": "Quand les stratégies sont bien définies mais non appliquées, c'est souvent la <strong>culture organisationnelle implicite</strong> qui bloque : normes non dites ('chacun dans sa classe'), peur du jugement, expériences passées négatives. C'est un obstacle systémique que ni un budget ni une formation supplémentaire ne suffisent à lever."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Dans le modèle Entrées-Processus-Sorties appliqué à une école, les subventions de discrimination positive sont :",
+  "opts": [
+   "A. Des processus internes à l'école (comment les ressources sont utilisées)",
+   "B. Des sorties (outputs) du système car elles résultent du classement de l'école",
+   "C. Des entrées (inputs) du système car elles constituent des ressources que l'école reçoit",
+   "D. Des mécanismes de rétroaction entre les sorties et les entrées"
+  ],
+  "ans": 2,
+  "exp": "Les subventions de discrimination positive sont des <strong>entrées (inputs)</strong> : elles constituent des ressources financières supplémentaires que l'école reçoit de son environnement (la FWB). Elles sont elles-mêmes le résultat d'une rétroaction politique vers le système scolaire."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Le DCO utilise le TABOR de façon systémique. Cela signifie concrètement qu'il :",
+  "opts": [
+   "A. Croise plusieurs indicateurs pour révéler des interactions non visibles en regardant un seul indicateur isolément",
+   "B. Compare uniquement les résultats aux épreuves externes car ce sont les seuls indicateurs objectifs",
+   "C. Utilise le TABOR comme outil de classement des écoles pour identifier les meilleures pratiques",
+   "D. Transmet le TABOR à l'école lors de la première rencontre sans analyse préalable"
+  ],
+  "ans": 0,
+  "exp": "L'approche systémique consiste à <strong>croiser plusieurs indicateurs</strong> pour révéler des interactions non visibles isolément. Exemple : un fort taux de redoublement + faible absentéisme peut indiquer que l'école retient ses élèves mais ne les fait pas progresser. Le croisement révèle ce que chaque indicateur seul ne montre pas."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "L'analyse MECE (Mutuellement Exclusive, Collectivement Exhaustive) appliquée au diagnostic d'un plan de pilotage vise à garantir que :",
+  "opts": [
+   "A. Les objectifs spécifiques sont classés par ordre de priorité décroissante",
+   "B. Les causes identifiées ne se recoupent pas ET couvrent l'ensemble du problème",
+   "C. Les stratégies sont mesurables et atteignables dans le délai de 6 ans",
+   "D. Les indicateurs du TABOR sont tous intégrés dans le diagnostic"
+  ],
+  "ans": 1,
+  "exp": "L'analyse <strong>MECE</strong> garantit que les causes sont <strong>mutuellement exclusives</strong> (elles ne se recoupent pas) et <strong>collectivement exhaustives</strong> (elles couvrent l'ensemble du problème). Cela évite de compter deux fois la même cause ou d'en oublier une importante."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Deux écoles du même profil socio-économique ont des résultats très différents malgré des ressources similaires. L'analyse systémique suggère d'examiner en priorité :",
+  "opts": [
+   "A. Les différences de programme entre les deux écoles selon leur réseau",
+   "B. Le taux de rotation des enseignants dans les deux établissements",
+   "C. Les performances individuelles de chaque enseignant dans les deux écoles",
+   "D. Les facteurs systémiques internes différenciant les deux écoles : leadership, culture de collaboration, cohérence pédagogique"
+  ],
+  "ans": 3,
+  "exp": "Si deux écoles de même profil ont des résultats différents, ce sont les <strong>facteurs systémiques internes</strong> qui expliquent la différence : qualité du leadership pédagogique, culture de collaboration entre enseignants, cohérence du projet pédagogique. Ces facteurs 'systémiques' révèlent ce qui fait la différence que le contexte externe ne peut expliquer."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "La notion de 'sous-système' dans le contexte d'une école permet de :",
+  "opts": [
+   "A. Identifier les acteurs les moins performants pour les accompagner individuellement",
+   "B. Classer les disciplines scolaires selon leur contribution aux OA du Pacte",
+   "C. Analyser des parties du système (équipe de maths, cellule bien-être...) qui ont leurs propres interactions et dynamiques",
+   "D. Définir les zones géographiques couvertes par chaque DCO"
+  ],
+  "ans": 2,
+  "exp": "Un <strong>sous-système</strong> est une partie du système qui peut être analysée comme un système à part entière, avec ses propres éléments, interactions et finalités. L'équipe de mathématiques, la cellule bien-être, l'administration — chacun est un sous-système de l'école globale."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Une école améliore ses pratiques pédagogiques grâce au travail collaboratif, ce qui améliore le bien-être des enseignants, ce qui attire de bons candidats, ce qui améliore encore les pratiques. Il s'agit d'une :",
+  "opts": [
+   "A. Rétroaction positive (spirale vertueuse) — amplification de la dynamique initiale positive",
+   "B. Rétroaction négative (régulation) — le système maintient son équilibre",
+   "C. Émergence systémique — une propriété nouvelle apparaît",
+   "D. Équifinalité — plusieurs chemins mènent au même résultat"
+  ],
+  "ans": 0,
+  "exp": "Il s'agit d'une <strong>rétroaction positive</strong> (spirale vertueuse) : chaque effet amplifie la cause initiale dans un cercle vertueux. Attention : 'positif' signifie 'qui amplifie', pas 'bénéfique'. Une rétroaction positive peut être une spirale ascendante (comme ici) ou descendante."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Le décret du 13 septembre 2018 crée le SGPE. À quelle date ses premières fonctions ont-elles été effectivement opérationnelles ?",
+  "opts": [
+   "A. Le 13 septembre 2018 (date de signature du décret)",
+   "B. Le 9 octobre 2018 (date de publication au Moniteur belge)",
+   "C. Le 22 mai 2019 (date de l'AGCF fixant le profil de compétences)",
+   "D. Le 23 avril 2019 (date d'entrée en stage des 4 premiers DZ et 53 premiers DCO)"
+  ],
+  "ans": 3,
+  "exp": "Les premières fonctions DCO/DZ sont devenues opérationnelles le <strong>23 avril 2019</strong>, date d'entrée en stage des 4 premiers DZ et 53 premiers DCO (1re vague). La circulaire 9669 concerne la 3e vague de recrutement en 2026."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Le profil de base 'Analyser l'information' (gestion de l'information) implique pour le DCO de :",
+  "opts": [
+   "A. Maîtriser les outils statistiques avancés pour analyser les données du TABOR",
+   "B. Comprendre, assimiler et analyser l'information en portant un jugement critique et objectif",
+   "C. Transmettre synthétiquement les informations des écoles aux services de l'Administration",
+   "D. Utiliser l'application PILOTAGE pour extraire des données comparatives entre établissements"
+  ],
+  "ans": 1,
+  "exp": "Le profil de base 'Analyser' implique de <strong>Comprendre → Assimiler → Analyser</strong> l'information en portant un <strong>jugement critique et objectif</strong>. C'est la capacité à évaluer la pertinence, la cohérence et la fiabilité des informations reçues — notamment les plans de pilotage et les indicateurs TABOR."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Lors de son analyse du plan de pilotage (60 jours), le DCO peut rencontrer d'autres acteurs que la direction et le PO. Lesquels ?",
+  "opts": [
+   "A. L'équipe éducative, les représentants des parents, les OLCS, et pour le secondaire les représentants des élèves",
+   "B. L'Inspection du réseau, les fédérations de PO et le Délégué coordonnateur",
+   "C. Les IBEFE et les partenaires entreprises de l'établissement",
+   "D. Le CPMS, les associations de parents et les membres du Conseil communal"
+  ],
+  "ans": 0,
+  "exp": "Pendant les 60 jours d'analyse, le DCO peut aussi rencontrer l'<strong>équipe éducative</strong>, les <strong>représentants des parents</strong>, les <strong>OLCS</strong>, et pour le secondaire les <strong>représentants des élèves</strong>. C'est une démarche participative qui va au-delà du seul dialogue direction/PO."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Le DCO constate que lors d'une évaluation intermédiaire, l'école a délibérément choisi de ne pas mettre en œuvre sa stratégie de travail collaboratif, sans justification valable. Quelle est la procédure appropriée ?",
+  "opts": [
+   "A. Résiliation immédiate du contrat d'objectifs et élaboration d'un nouveau plan",
+   "B. Transmission directe à l'Inspection pour déclencher un audit externe",
+   "C. Qualification de 'mauvaise volonté manifeste' et mise en place d'un suivi rapproché annuel par le DCO",
+   "D. Réduction de 5% des subventions de fonctionnement par le Gouvernement"
+  ],
+  "ans": 2,
+  "exp": "La non-mise en œuvre délibérée sans justification qualifie la situation de <strong>'mauvaise volonté manifeste'</strong>. Le DCO met en place un <strong>suivi rapproché annuel</strong>. La réduction de 5% est une sanction qui n'intervient qu'après plusieurs étapes supplémentaires (courrier recommandé du DZ, délai de 30 jours...)."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "La fonction DCO est une fonction 'de promotion'. Cela signifie qu'elle est :",
+  "opts": [
+   "A. Accessible à tout citoyen belge disposant d'un diplôme de bachelier",
+   "B. Accessible uniquement aux directeurs d'école en exercice depuis au moins 10 ans",
+   "C. Accessible aux fonctionnaires fédéraux et communautaires via un concours transversal",
+   "D. Accessible aux membres du personnel de l'enseignement répondant à des conditions statutaires et ayant réussi l'épreuve d'admission"
+  ],
+  "ans": 3,
+  "exp": "La fonction de promotion est accessible aux <strong>membres du personnel de l'enseignement</strong> répondant aux conditions statutaires (ancienneté de 10 ans, nommé/engagé à titre définitif, expériences spécifiques...) et ayant réussi l'épreuve d'admission au stage."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Le profil de base 'Soutenir' (gestion des collaborateurs) implique que le DCO développe une relation avec les directeurs d'école basée sur :",
+  "opts": [
+   "A. L'autorité hiérarchique : le DCO est supérieur au directeur dans le système de pilotage",
+   "B. La transmission d'expertise et l'accompagnement professionnel : partager son savoir-faire et servir de modèle",
+   "C. La neutralité totale : le DCO ne prend jamais position pour ne pas influencer les choix du directeur",
+   "D. La supervision régulière : vérifier mensuellement que le directeur met en œuvre son plan"
+  ],
+  "ans": 1,
+  "exp": "Le profil 'Soutenir' implique de <strong>partager son expertise, accompagner et servir de modèle</strong>. Ce n'est pas une relation hiérarchique (le DCO n'est pas le supérieur du directeur) ni une supervision régulière contraignante. C'est une relation de développement professionnel."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Dans le dispositif EDA (art. 68), qui fixe les objectifs d'ajustement que l'école devra poursuivre ?",
+  "opts": [
+   "A. Le DCO, sur base du diagnostic réalisé par l'Inspection",
+   "B. L'école elle-même, en autonomie, après consultation du CPMS",
+   "C. Le DZ, après validation par le Délégué coordonnateur",
+   "D. Un comité ad hoc composé du DCO, du DZ et de la Fédération de PO"
+  ],
+  "ans": 0,
+  "exp": "Dans le dispositif EDA, les <strong>objectifs d'ajustement sont fixés par le DCO</strong>, sur base du diagnostic réalisé par l'Inspection. C'est une différence fondamentale avec le plan ordinaire où l'école définit ses objectifs en autonomie. Le DCO n'impose pas de méthodes pédagogiques, mais il fixe les objectifs à atteindre."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Si un établissement introduit un recours contre l'appréciation du DCO sur l'adéquation de son plan de pilotage, quelle instance est saisie ?",
+  "opts": [
+   "A. Le Conseil d'État, en tant que juridiction administrative compétente",
+   "B. Le Service général de l'Inspection, pour un audit indépendant",
+   "C. L'instance collégiale composée du DZ concerné et du Délégué coordonnateur",
+   "D. La Commission de pilotage, organe consultatif indépendant"
+  ],
+  "ans": 2,
+  "exp": "En cas de désaccord persistant entre un établissement et le DCO, l'établissement peut saisir l'<strong>instance collégiale composée du DZ concerné et du Délégué coordonnateur</strong>. Cette instance peut adapter les recommandations du DCO et prolonger le délai laissé à l'établissement."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "La durée du stage probatoire d'un DCO nouvellement admis est de :",
+  "opts": [
+   "A. 6 mois, avec une évaluation à mi-parcours",
+   "B. 2 ans, comme mentionné dans les premières circulaires de 2019",
+   "C. 18 mois, conformément aux dispositions du décret du 18 avril 2024",
+   "D. 1 an, conformément au décret du 13 septembre 2018"
+  ],
+  "ans": 3,
+  "exp": "Le stage probatoire du DCO dure <strong>1 an</strong>, conformément au décret du 13 septembre 2018. Les premières circulaires (2019) mentionnaient 2 ans, mais la circulaire 9669 (2026) confirme la durée d'1 an telle que définie dans le décret."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Le Délégué coordonnateur (DC) peut autoriser un DCO à intervenir dans une autre zone que celle d'affectation. Cette autorisation se fait :",
+  "opts": [
+   "A. Selon les modalités que le DC détermine avec le DZ concerné par la zone d'accueil",
+   "B. Uniquement en cas d'urgence et pour une durée maximale de 3 mois",
+   "C. Sur demande écrite du PO qui souhaite bénéficier d'un DCO spécifique",
+   "D. Après vote favorable de l'instance collégiale DZ + DC"
+  ],
+  "ans": 0,
+  "exp": "Le DC peut autoriser une intervention dans une autre zone <strong>selon les modalités qu'il détermine avec le DZ concerné</strong>. C'est une décision organisationnelle souple qui ne nécessite pas de vote ni de procédure formelle lourde."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "L'épreuve écrite DCO comprend deux types de questions. Quels sont-ils exactement ?",
+  "opts": [
+   "A. Questions de mise en situation professionnelle et questions de culture générale",
+   "B. Questions théoriques et questions de jugement situationnel",
+   "C. Questions de compréhension de textes légaux et questions d'analyse de données",
+   "D. Questions à choix multiple et questions ouvertes à réponse courte"
+  ],
+  "ans": 1,
+  "exp": "L'épreuve écrite comprend des <strong>questions théoriques</strong> (connaissances sur les textes légaux, le Pacte, etc.) ET des <strong>questions de jugement situationnel</strong> (comment réagiriez-vous face à telle situation professionnelle). C'est précisé dans les circulaires de recrutement depuis 2019."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Dans les questions de jugement situationnel de l'épreuve DCO, quel est le principe de base pour identifier la bonne réponse ?",
+  "opts": [
+   "A. La réponse qui démontre la plus grande maîtrise des textes légaux applicables à la situation",
+   "B. La réponse qui résout le problème le plus rapidement et avec le moins de ressources",
+   "C. La réponse qui correspond au profil de base du DCO : accompagner, conseiller, respecter l'autonomie, adopter une vision systémique",
+   "D. La réponse qui implique le moins d'acteurs possibles pour préserver la confidentialité du plan"
+  ],
+  "ans": 2,
+  "exp": "Dans les questions de jugement situationnel, la bonne réponse est celle qui <strong>correspond au profil de base du DCO</strong> : accompagner sans imposer, dialoguer plutôt que sanctionner, respecter la liberté pédagogique du PO, adopter une vision systémique des problèmes, soutenir le développement professionnel des équipes."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Combien d'écoles en FWB disposent d'un contrat d'objectifs selon les données officielles citées par Cavillot devant le Parlement ?",
+  "opts": [
+   "A. 1 500 écoles (fondamental uniquement)",
+   "B. 3 200 écoles (tous niveaux confondus)",
+   "C. 2 000 écoles (première vague uniquement)",
+   "D. 2 715 écoles (fondamental et secondaire, tous réseaux)"
+  ],
+  "ans": 3,
+  "exp": "Selon Cavillot : <strong>2 715 écoles</strong> disposent d'un contrat d'objectifs en FWB (fondamental et secondaire, tous réseaux confondus). Ce chiffre figure aussi sur le site enseignement.be."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Le DZ est responsable des procédures des articles 67 et 68 du décret Missions pour sa zone. Dans le cas spécifique où le DCO n'a pas respecté les délais légaux pour l'analyse d'un plan, que se passe-t-il ?",
+  "opts": [
+   "A. Le DZ assume lui-même l'analyse à la place du DCO",
+   "B. Le plan est automatiquement validé car le délai est dépassé",
+   "C. Le DCO est sanctionné disciplinairement et le plan est renvoyé à l'analyse",
+   "D. L'établissement peut introduire directement son plan auprès de l'instance collégiale"
+  ],
+  "ans": 0,
+  "exp": "Si le DCO n'a pas respecté ses délais, <strong>c'est le DZ qui assume l'analyse à sa place</strong>. C'est l'une des responsabilités spécifiques du DZ : intervenir dans les cas exceptionnels où le DCO n'a pas réalisé l'analyse dans le délai légal."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "L'application informatique 'PILOTAGE' est accessible aux directeurs et PO via :",
+  "opts": [
+   "A. Le site enseignement.be avec un compte générique partagé par établissement",
+   "B. Une application mobile dédiée téléchargeable sur les stores Apple et Android",
+   "C. Le portail am.cfwb.be via un compte Cerbère personnel",
+   "D. Un accès direct depuis l'intranet de l'Administration générale de l'Enseignement"
+  ],
+  "ans": 2,
+  "exp": "L'application PILOTAGE est accessible via le portail <strong>am.cfwb.be</strong> avec un <strong>compte Cerbère personnel</strong>. Cerbère est l'infrastructure de gestion des identités et des accès de la FWB. Chaque directeur et PO dispose d'un compte personnel."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "Dans la partie diagnostic du plan de pilotage, les données sont présentées à 3 niveaux de comparaison. Dans quel ordre le guide PILOTAGE recommande-t-il de les lire ?",
+  "opts": [
+   "A. D'abord la moyenne FWB, puis la moyenne des comparables, puis les données de l'école",
+   "B. D'abord les données de l'école, puis la moyenne FWB, puis la moyenne des comparables",
+   "C. D'abord la moyenne des comparables, puis la moyenne FWB, puis les données de l'école",
+   "D. D'abord les données de l'école, puis la moyenne des comparables, puis la moyenne FWB"
+  ],
+  "ans": 3,
+  "exp": "La lecture systémique recommandée est : d'abord les données de l'<strong>école elle-même</strong> (évolution dans le temps), puis la <strong>moyenne des comparables</strong> (même profil ISE), puis la <strong>moyenne FWB</strong>. Cette séquence permet de situer l'école dans son contexte avant de la comparer à l'ensemble."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Les 15 thématiques du plan de pilotage permettent à l'école de :",
+  "opts": [
+   "A. Se raconter : décrire ses actions, initiatives et défis au quotidien dans chacun de ces domaines",
+   "B. Fixer des objectifs chiffrés pour chacune des 15 dimensions de son fonctionnement",
+   "C. Être évaluée par le DCO sur l'ensemble de ses pratiques éducatives",
+   "D. Justifier ses choix pédagogiques face à l'Inspection lors des visites d'évaluation"
+  ],
+  "ans": 0,
+  "exp": "Les 15 thématiques permettent à l'école de <strong>'se raconter'</strong> — c'est l'expression exacte utilisée par Cavillot devant le Parlement. L'école décrit ses actions, initiatives et défis dans ces domaines. Ce n'est pas un exercice d'auto-évaluation chiffrée."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "La thématique 7 du plan de pilotage couvre un domaine particulièrement sensible. De quoi s'agit-il ?",
+  "opts": [
+   "A. La politique de frais scolaires et l'accès équitable à l'enseignement",
+   "B. La prévention et prise en charge des discriminations, violences, harcèlement et événements d'exception",
+   "C. L'insertion des outils numériques dans les apprentissages",
+   "D. Les dispositifs d'accrochage scolaire pour les élèves à risque"
+  ],
+  "ans": 1,
+  "exp": "La <strong>thématique 7</strong> porte sur la <strong>prévention et prise en charge des discriminations et violences</strong> (harcèlement, cyberharcèlement, événements d'exception, aide juridique, médiation). C'est une des thématiques qui peut être particulièrement pertinente dans un contexte de radicalisation ou de conflits scolaires."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Le diagnostic du plan de pilotage est qualifié de 'confidentiel'. Parmi ces personnes, laquelle N'A PAS accès au diagnostic confidentiel ?",
+  "opts": [
+   "A. Le directeur de l'établissement",
+   "B. Le pouvoir organisateur",
+   "C. Les services du Gouvernement (DCO, Inspection)",
+   "D. Les parents d'élèves en tant que collectivité"
+  ],
+  "ans": 3,
+  "exp": "Le diagnostic confidentiel est réservé à l'équipe éducative, le directeur, le PO, les services du Gouvernement et la Fédération de PO. Les <strong>parents d'élèves en tant que collectivité</strong> n'y ont pas accès. Le CoPa reçoit les objectifs et stratégies pour avis, mais pas le diagnostic complet avec les données confidentielles."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "La thématique 11 du plan de pilotage porte sur la culture et la lecture. Quel type de partenariats vise-t-elle ?",
+  "opts": [
+   "A. Les collaborations avec les institutions culturelles et de lecture publique de l'environnement de l'école",
+   "B. La mise en place de bibliothèques scolaires et de coins lecture dans chaque classe",
+   "C. Les sorties culturelles organisées par l'école (musées, théâtres, cinémas)",
+   "D. La formation des enseignants aux pratiques de lecture partagée"
+  ],
+  "ans": 0,
+  "exp": "La thématique 11 vise les <strong>collaborations avec les institutions culturelles et de lecture publique</strong> de l'environnement de l'école (bibliothèques communales, centres culturels, maisons de lecture...). C'est l'axe 'ouverture sur l'environnement' du Pacte appliqué à la culture."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Dans le dispositif EDA, l'évaluation du protocole de collaboration est réalisée :",
+  "opts": [
+   "A. À mi-parcours (18 mois) et en fin de protocole (36 mois) uniquement",
+   "B. Uniquement en fin de protocole (3 ans), comme pour le contrat ordinaire",
+   "C. Annuellement, dès la signature du protocole de collaboration",
+   "D. Trimestriellement durant la première année, puis annuellement"
+  ],
+  "ans": 2,
+  "exp": "Dans le dispositif EDA, l'évaluation est réalisée <strong>annuellement</strong> dès la signature du protocole. C'est l'une des différences fondamentales avec le plan ordinaire (évaluation à 3 ans). Le suivi rapproché annuel est systématique dans l'EDA."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "Dans le guide PILOTAGE Vol.1, quelle expression est utilisée pour décrire ce que le DCO vérifie principalement lors de l'analyse du plan ?",
+  "opts": [
+   "A. La 'conformité technique' du plan aux textes légaux applicables",
+   "B. La 'pertinence pédagogique' des stratégies choisies par l'école",
+   "C. La 'cohérence interne' entre les différentes parties du plan",
+   "D. L'adéquation du plan aux objectifs d'amélioration, compte tenu de la situation spécifique de l'établissement"
+  ],
+  "ans": 3,
+  "exp": "Le guide PILOTAGE utilise l'expression : le DCO vérifie que les objectifs spécifiques <strong>'apportent une contribution satisfaisante aux objectifs d'amélioration fixés par la FWB, eu égard à la situation spécifique de l'établissement et à ce qu'il met déjà en œuvre'</strong>. C'est une formulation précise qui englobe adéquation ET contextualisation."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Les 4 indicateurs permettant d'identifier une école EDA (École en Dispositif d'Ajustement) sont :",
+  "opts": [
+   "A. Résultats CEB, résultats CE1D, taux de redoublement et taux de décrochage",
+   "B. Résultats des élèves, parcours scolaire, dynamique des équipes éducatives et climat de l'école",
+   "C. OA1, OA3, OA4 et OA7 uniquement",
+   "D. TABOR, PISA, PIRLS et TIMSS"
+  ],
+  "ans": 1,
+  "exp": "Les 4 indicateurs EDA sont : <strong>1° Résultats des élèves · 2° Parcours scolaire · 3° Dynamique des équipes éducatives · 4° Climat de l'école</strong>. C'est le croisement de ces 4 dimensions qui révèle si une école est 'significativement en dessous de la moyenne des écoles de même profil'."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "Dans l'application PILOTAGE, l'onglet 'Ressources PR' du volet EDA correspond aux ressources :",
+  "opts": [
+   "A. Mises à disposition obligatoirement par le Pouvoir Régulateur (FWB) et la Fédération de PO pour accompagner l'école EDA",
+   "B. Propres à l'école (PR = Propres Ressources) pour financer son dispositif d'ajustement",
+   "C. Du Pouvoir Régulateur destinées aux enseignants en reconversion professionnelle",
+   "D. Des Partenaires Régionaux (IBEFE, bassins EFE) mobilisés dans le cadre du dispositif"
+  ],
+  "ans": 0,
+  "exp": "'PR' = <strong>Pouvoir Régulateur</strong> (la FWB). Dans le dispositif EDA, le Pouvoir Régulateur et la Fédération de PO ont l'<strong>obligation</strong> de proposer et de mettre à disposition des ressources particulières pour l'école. Ce n'est pas optionnel — c'est un engagement contraignant du système."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le plan de pilotage doit être 'cohérent avec le projet éducatif du PO'. Un DCO analyse le plan d'une école catholique dont les stratégies intègrent une dimension éthique et spirituelle dans ses objectifs scolaires. Quelle est la réaction correcte ?",
+  "opts": [
+   "A. Refuser car les objectifs doivent être exclusivement pédagogiques et mesurables",
+   "B. Accepter uniquement la dimension pédagogique et demander de supprimer les références éthiques",
+   "C. Transmettre à l'Inspection pour vérifier la conformité avec la neutralité",
+   "D. Accepter car le projet éducatif catholique est légitimement protégé par la liberté d'enseignement"
+  ],
+  "ans": 3,
+  "exp": "Le DCO doit <strong>accepter</strong> car les stratégies intégrant la dimension éthique et spirituelle sont <strong>cohérentes avec le projet éducatif catholique du PO</strong>, protégé par la liberté d'enseignement (art. 24 Constitution). Le DCO ne peut pas imposer une vision laïque à un PO confessionnel."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "L'OA5 vise à réduire les changements d'école. Quel mécanisme légal contribue directement à cet objectif ?",
+  "opts": [
+   "A. La suppression du droit d'exclusion définitive pour les élèves du tronc commun",
+   "B. La procédure centralisée d'inscription en 1re secondaire (Code, Livre 1, Titre VII)",
+   "C. L'obligation pour les écoles de maintenir les élèves jusqu'à la fin du tronc commun",
+   "D. L'interdiction pour les parents de changer leur enfant d'école plus d'une fois par cycle"
+  ],
+  "ans": 1,
+  "exp": "La <strong>procédure centralisée d'inscription en 1re secondaire</strong> (Code, Livre 1, Titre VII) contribue à l'OA5 en réduisant les stratégies d'évitement scolaire et en limitant les changements d'école liés aux tensions entre établissements. Elle vise à garantir une répartition équitable des élèves."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le Pacte identifie le 'manque de leadership pédagogique' des directeurs comme un problème. Quelle réforme y répond directement ?",
+  "opts": [
+   "A. Le décret du 2 février 2007 modifié et le rôle renforcé du directeur comme pilote du plan de pilotage",
+   "B. La création des CPMS renforcés pour soutenir les directeurs en difficulté",
+   "C. La formation obligatoire des directeurs par le SGPE avant chaque contractualisation",
+   "D. La nomination systématique d'un DZ adjoint pour les grandes écoles"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>rôle renforcé du directeur comme pilote pédagogique</strong>, codifié dans le décret du 2 février 2007 et renforcé par la logique du plan de pilotage, répond directement à ce problème. Le directeur est désormais l'interlocuteur principal du DCO et le responsable de la mise en œuvre du contrat d'objectifs."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "La mise en œuvre du plan de pilotage doit débuter au plus tard le :",
+  "opts": [
+   "A. 1er janvier suivant la signature du contrat d'objectifs",
+   "B. 30 jours après la signature du contrat d'objectifs",
+   "C. 1er septembre suivant la signature du contrat d'objectifs",
+   "D. Immédiatement après la signature du contrat d'objectifs"
+  ],
+  "ans": 2,
+  "exp": "La mise en œuvre doit débuter au plus tard le <strong>1er septembre suivant la signature</strong> du contrat d'objectifs. Ce délai permet à l'école d'organiser sa mise en œuvre (formation des équipes, réunions de concertation, planification des actions) avant le début de l'année scolaire."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Un PO refuse de soumettre son plan au CoPa avant de l'envoyer au DCO. Quelles sont les conséquences ?",
+  "opts": [
+   "A. Le DCO peut analyser le plan quand même car la consultation du CoPa n'est pas une condition suspensive",
+   "B. Le DCO refuse automatiquement le plan et demande une nouvelle soumission avec l'avis du CoPa",
+   "C. Le DZ intervient pour obliger le PO à respecter la procédure légale",
+   "D. Le DCO signale le défaut de consultation comme un manquement procédural et demande régularisation avant toute analyse"
+  ],
+  "ans": 3,
+  "exp": "La consultation du CoPa est obligatoire. Si elle n'a pas eu lieu, le DCO <strong>signale le défaut procédural et demande régularisation</strong> avant d'analyser le fond. La date et le compte-rendu des consultations doivent être encodés dans l'application PILOTAGE — leur absence est visible."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le Pacte parle de 'pilotage par les acteurs de terrain'. Quel équilibre cela exprime-t-il ?",
+  "opts": [
+   "A. Les enseignants décident seuls de leurs programmes, sans intervention du PO ni de la FWB",
+   "B. Les écoles ont une autonomie croissante dans le choix de leurs stratégies, mais sont responsabilisées vis-à-vis d'objectifs collectifs définis par la FWB",
+   "C. La FWB impose des objectifs identiques à toutes les écoles, les acteurs choisissent librement les moyens",
+   "D. Le pilotage est partagé entre la FWB (objectifs), les PO (moyens) et les directeurs (résultats)"
+  ],
+  "ans": 1,
+  "exp": "Le pilotage par les acteurs de terrain signifie : <strong>autonomie croissante dans le choix des stratégies + responsabilisation vis-à-vis des OA collectifs</strong>. Les écoles définissent leurs propres plans (autonomie) mais s'engagent sur des objectifs qui contribuent aux OA de la FWB (responsabilisation)."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "La thématique 13 du plan de pilotage (partenariats avec les entreprises) ne s'applique qu'aux établissements proposant de l'enseignement qualifiant. Un DCO analyse le plan d'une école fondamentale qui a rempli cette thématique en décrivant des partenariats avec des artisans pour des activités FMTTN. Que fait-il ?",
+  "opts": [
+   "A. Valorise cette initiative car elle illustre l'esprit du tronc commun polytechnique, même si la thématique 13 est en principe pour le qualifiant",
+   "B. Demande à l'école de supprimer cette section car elle ne correspond pas au niveau d'enseignement",
+   "C. Ignore cette section car elle n'est pas obligatoire pour le fondamental",
+   "D. Transmet à l'Inspection pour vérifier la légalité des partenariats avec des entreprises en fondamental"
+  ],
+  "ans": 0,
+  "exp": "Le DCO <strong>valorise l'initiative</strong> : même si la thématique 13 est principalement destinée au qualifiant, des partenariats avec des artisans dans le cadre de la FMTTN s'inscrivent parfaitement dans l'esprit du tronc commun polytechnique et de l'Axe 1 du Pacte. La cohérence avec le projet et les OA est plus importante que la conformité stricte au cadre formel."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "L'OA7 (bien-être) est mesuré par une enquête multidimensionnelle systémique. À quelle fréquence cette enquête est-elle réalisée ?",
+  "opts": [
+   "A. Annuellement, pour permettre un suivi régulier de l'évolution",
+   "B. Tous les 3 ans, en parallèle avec l'évaluation intermédiaire du contrat d'objectifs",
+   "C. Tous les 5 ans, pour mesurer les effets à moyen terme des politiques du Pacte",
+   "D. En début et en fin de chaque contrat d'objectifs (tous les 6 ans)"
+  ],
+  "ans": 2,
+  "exp": "L'enquête multidimensionnelle sur le bien-être est réalisée <strong>tous les 5 ans</strong>. Elle mesure le bien-être des élèves, des enseignants et des directions, ainsi que le sentiment d'appartenance, la sécurité et le plaisir d'apprendre/enseigner."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "La modification du décret Missions par le décret du 13 septembre 2018 introduit les articles 67 et 68. Quelle est la portée de cette modification pour les établissements ?",
+  "opts": [
+   "A. Elle supprime le projet d'établissement au profit du plan de pilotage",
+   "B. Elle rend obligatoire la consultation de l'Inspection avant toute contractualisation",
+   "C. Elle transfère la responsabilité des objectifs du PO vers le directeur",
+   "D. Elle contractualise les relations entre la FWB et les établissements scolaires via un mécanisme d'objectifs et de suivi"
+  ],
+  "ans": 3,
+  "exp": "La modification introduit un <strong>mécanisme de contractualisation</strong> : les relations entre la FWB et les établissements scolaires sont désormais régies par un contrat d'objectifs, avec suivi et évaluation. C'est un changement de paradigme : on passe de l'obligation de conformité réglementaire à l'engagement sur des objectifs d'amélioration."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Le décret Missions impose à chaque PO d'avoir un 'projet éducatif'. Qu'est-ce que ce document contient ?",
+  "opts": [
+   "A. Les valeurs, options fondamentales, objectifs et priorités éducatives du PO",
+   "B. Le programme détaillé des cours pour chaque niveau et discipline",
+   "C. Les critères d'admission et de sélection des élèves dans les établissements du PO",
+   "D. Les modalités d'évaluation et de certification des élèves"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>projet éducatif</strong> exprime les <strong>valeurs, options fondamentales, objectifs et priorités éducatives</strong> du PO. C'est le document de référence qui détermine l'identité pédagogique de l'ensemble des établissements d'un même PO. Le projet pédagogique en est la traduction méthodologique."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Depuis le décret du 14 mars 2019, le PO peut organiser des 'activités pluridisciplinaires' en regroupant les périodes de plusieurs matières. Cette flexibilité est encadrée par :",
+  "opts": [
+   "A. Une décision annuelle du PO sans consultation préalable requise",
+   "B. Une autorisation préalable de l'Administration générale de l'Enseignement",
+   "C. Les modalités fixées par le Gouvernement dans un cadre légal défini",
+   "D. L'accord unanime des enseignants concernés, formalisé dans le règlement de travail"
+  ],
+  "ans": 2,
+  "exp": "La souplesse organisationnelle est accordée dans le <strong>respect d'un cadre légal défini par le Gouvernement</strong>. Ce n'est pas une liberté totale — le PO ne peut pas modifier les programmes ni supprimer des disciplines. Il peut combiner des périodes pour des projets pluridisciplinaires dans le respect des référentiels."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Dans l'enseignement secondaire ordinaire de plein exercice, le 2e degré correspond aux années :",
+  "opts": [
+   "A. 1re et 2e secondaire (1er degré)",
+   "B. 3e et 4e secondaire",
+   "C. 4e, 5e et 6e secondaire",
+   "D. 5e et 6e secondaire (3e degré)"
+  ],
+  "ans": 1,
+  "exp": "Le <strong>2e degré</strong> de l'enseignement secondaire correspond aux <strong>3e et 4e années secondaires</strong>. Le 1er degré = 1re et 2e secondaire. Le 3e degré = 5e et 6e secondaire. Une 7e année peut exister dans certaines filières qualifiantes."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Le décret du 17 juin 2021 (Livre 6 — FPC) prévoit que les 5 premières années en fonction donnent droit à une formation complémentaire. Quel est ce quota ?",
+  "opts": [
+   "A. 1 demi-jour supplémentaire par mois (max 5/an)",
+   "B. 3 demi-jours supplémentaires par mois (max 15/an)",
+   "C. 1 semaine de formation intensive par an en dehors du temps scolaire",
+   "D. 2 demi-jours supplémentaires par mois (max 10/an)"
+  ],
+  "ans": 3,
+  "exp": "Pendant les <strong>5 premières années en fonction</strong>, un enseignant bénéficie de <strong>2 demi-jours supplémentaires par mois</strong> (maximum <strong>10 demi-jours par an</strong>). Ce quota s'ajoute aux 6 demi-jours pendant le temps scolaire."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "La FELSI regroupe les PO de l'enseignement libre :",
+  "opts": [
+   "A. Non confessionnel indépendant (écoles Steiner, pédagogies actives, écoles laïques privées...)",
+   "B. Confessionnel catholique de la Région wallonne uniquement",
+   "C. Confessionnel non catholique (protestant, islamique, orthodoxe...)",
+   "D. Officiel subventionné à statut privé"
+  ],
+  "ans": 0,
+  "exp": "La <strong>FELSI</strong> (Fédération des Établissements Libres Subventionnés Indépendants) représente l'enseignement <strong>libre non confessionnel indépendant</strong> : écoles Steiner/Waldorf, écoles à pédagogies actives (Freinet, Montessori...), et autres écoles libres non affiliées au SeGEC."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Le décret du 22 juin 2023 prévoit que les IBEFE identifient les 'fonctions critiques' (FC) à l'échelle :",
+  "opts": [
+   "A. Nationale (une liste unique pour toute la FWB)",
+   "B. Provinciale (une liste par province wallonne + Bruxelles)",
+   "C. Du bassin EFE (une liste par bassin selon les besoins locaux de l'emploi)",
+   "D. Communale (chaque commune décide de ses métiers prioritaires)"
+  ],
+  "ans": 2,
+  "exp": "Les FC sont définies au niveau de <strong>chaque bassin EFE</strong>, par les IBEFE, en fonction des besoins locaux du marché de l'emploi. Un métier peut être en pénurie dans un bassin et pas dans un autre — cette approche locale est plus pertinente qu'une liste nationale uniforme."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Les 'nouveaux référentiels inter-réseaux' introduits par le tronc commun se distinguent des anciens socles de compétences par :",
+  "opts": [
+   "A. Ils sont définis par chaque réseau de façon autonome pour respecter leur projet éducatif",
+   "B. Ils s'appliquent à TOUS les réseaux de façon identique, garantissant un socle commun pour tous les élèves",
+   "C. Ils sont plus exigeants que les anciens socles et incluent des compétences numériques obligatoires",
+   "D. Ils sont définis par les IBEFE en lien avec les besoins du marché du travail"
+  ],
+  "ans": 1,
+  "exp": "Les nouveaux référentiels inter-réseaux sont <strong>identiques dans tous les réseaux</strong>. C'est une nouveauté majeure : pour la première fois, tous les élèves FWB (quel que soit leur réseau) ont les mêmes référentiels de compétences pendant le tronc commun."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Dans l'enseignement fondamental, le décret du 13 juillet 1998 prévoit un horaire hebdomadaire de 28 périodes pour le primaire. Le PO peut-il le modifier ?",
+  "opts": [
+   "A. Non, 28 périodes est un minimum et un maximum légaux imposés",
+   "B. Oui, il peut le réduire à 24 périodes sur demande formelle à la FWB",
+   "C. Oui, il peut l'augmenter librement jusqu'à 40 périodes",
+   "D. Oui, après avis du Conseil de participation, il peut le porter jusqu'à 31 ou le réduire à 26"
+  ],
+  "ans": 3,
+  "exp": "Après avis du Conseil de participation, le PO peut <strong>porter l'horaire jusqu'à 31 périodes ou le réduire à 26 périodes</strong>. Les 28 périodes sont la norme de référence mais pas une limite absolue — la flexibilité est encadrée."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Le type 1 de l'enseignement spécialisé concerne les élèves présentant :",
+  "opts": [
+   "A. Une déficience mentale légère",
+   "B. Une déficience mentale modérée à sévère",
+   "C. Des troubles du comportement et de la personnalité",
+   "D. Des troubles instrumentaux spécifiques"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>type 1</strong> concerne les élèves présentant une <strong>déficience mentale légère</strong>. Le type 2 = déficience mentale modérée à sévère. Le type 3 = troubles du comportement. Le type 8 = troubles instrumentaux (primaire uniquement)."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "La 'forme 3' de l'enseignement spécialisé secondaire délivre :",
+  "opts": [
+   "A. Le CESS équivalent à l'enseignement ordinaire",
+   "B. Un certificat de qualification reconnu par les secteurs professionnels",
+   "C. Une attestation de fréquentation sans certification formelle",
+   "D. Un diplôme d'aptitude professionnelle spécifique au spécialisé"
+  ],
+  "ans": 1,
+  "exp": "La <strong>forme 3</strong> délivre un <strong>certificat de qualification reconnu</strong> par les secteurs professionnels. Elle diffère de la forme 2 (activités pratiques sans certification) et de la forme 4 (CESS possible). C'est l'équivalent du qualifiant ordinaire pour les élèves du spécialisé."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Dans le cadre de l'intégration scolaire, un 'protocole d'intégration' doit être signé. Quels acteurs l'élaborent et le signent ?",
+  "opts": [
+   "A. Uniquement les deux directeurs (spécialisé et ordinaire) et les parents",
+   "B. Les deux PO, les deux directions, et le Délégué coordonnateur du SGPE",
+   "C. L'établissement spécialisé, l'établissement ordinaire, le CPMS et les parents",
+   "D. Le CPMS, l'Inspection et les parents, les directions étant informées"
+  ],
+  "ans": 2,
+  "exp": "Le protocole d'intégration implique : l'<strong>établissement spécialisé</strong> (qui reste l'école de référence), l'<strong>établissement ordinaire</strong> (qui accueille), le <strong>CPMS</strong> (qui coordonne le suivi) et les <strong>parents</strong> (qui donnent leur accord). C'est une démarche collective et formalisée."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "La COCOF peut être PO dans l'enseignement officiel subventionné. Dans quelle région et pour quel type de population ?",
+  "opts": [
+   "A. En Région wallonne, pour les élèves allophones",
+   "B. Dans toute la FWB, pour les établissements à statut spécial",
+   "C. En Région wallonne, pour les communes sans école officielle",
+   "D. En Région de Bruxelles-Capitale, pour les établissements destinés aux francophones bruxellois"
+  ],
+  "ans": 3,
+  "exp": "La <strong>COCOF</strong> (Commission Communautaire Française) est l'organe de la <strong>Région de Bruxelles-Capitale</strong> compétent pour certaines matières des <strong>francophones bruxellois</strong>. Elle peut exercer comme PO dans l'enseignement officiel subventionné à Bruxelles."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "La langue moderne est obligatoire dans l'enseignement primaire à partir de :",
+  "opts": [
+   "A. La 5e et 6e primaire",
+   "B. La 3e primaire dans toutes les régions",
+   "C. La 4e primaire seulement en Région bruxelloise",
+   "D. La 1re primaire dans les communes à facilités"
+  ],
+  "ans": 0,
+  "exp": "La langue moderne est obligatoire en <strong>5e et 6e primaire</strong>. Certaines écoles peuvent l'introduire plus tôt (immersion dès la maternelle) mais l'obligation légale commence en 5e primaire selon le décret du 13 juillet 1998."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Le décret du 29 juillet 1992 (secondaire PE) distingue deux sections. Dans la section de qualification, à partir de quelle année les élèves choisissent-ils leur orientation ?",
+  "opts": [
+   "A. Dès la 1re secondaire (fin du tronc commun n'existant pas encore à cette époque)",
+   "B. À partir de la 3e secondaire (après le tronc commun, fin du 1er degré)",
+   "C. À partir de la 4e secondaire (début du 3e degré)",
+   "D. À partir de la 2e secondaire (après 1 an d'exploration)"
+  ],
+  "ans": 1,
+  "exp": "Avec le tronc commun, l'orientation vers la qualification ou la transition se fait <strong>à partir de la 3e secondaire</strong>, après le 1er degré (1re et 2e secondaire) qui fait partie du tronc commun. C'est précisément l'un des objectifs du tronc commun : retarder cette orientation jusqu'à 15 ans."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "La pensée systémique s'oppose à la pensée 'linéaire'. Quel est l'exemple le plus pertinent de cette opposition dans le contexte du pilotage scolaire ?",
+  "opts": [
+   "A. Réduire le nombre d'objectifs du plan de pilotage pour simplifier le travail des équipes",
+   "B. Augmenter les ressources financières pour améliorer les résultats scolaires",
+   "C. Former individuellement les enseignants en difficulté pour améliorer leurs pratiques",
+   "D. Analyser comment les interactions entre direction, enseignants et élèves créent un climat qui influence les résultats, plutôt que d'attribuer les résultats à une seule cause"
+  ],
+  "ans": 3,
+  "exp": "La pensée systémique cherche les <strong>interactions multiples</strong> plutôt qu'une relation cause-effet unique. L'option D illustre cette approche : au lieu de dire 'les résultats sont mauvais à cause des enseignants' (linéaire), on analyse comment la direction, les enseignants et les élèves interagissent pour créer le système qui produit ces résultats."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Un établissement présente d'excellents résultats aux épreuves externes mais un fort taux d'orientation vers le spécialisé. L'analyse systémique révèle :",
+  "opts": [
+   "A. Une possible tension entre la recherche de bons résultats moyens et l'inclusion : les bons résultats peuvent être maintenus en orientant les élèves en difficulté vers le spécialisé",
+   "B. Que l'école fonctionne bien car elle oriente correctement les élèves selon leurs besoins",
+   "C. Que le taux d'orientation vers le spécialisé est un indicateur indépendant des résultats externes",
+   "D. Que les familles choisissent librement le spécialisé pour leurs enfants, ce qui ne remet pas en cause les résultats"
+  ],
+  "ans": 0,
+  "exp": "L'analyse systémique révèle une possible <strong>tension entre résultats (OA1) et inclusion (OA6)</strong> : de bons résultats moyens peuvent être maintenus artificiellement en orientant les élèves en difficulté vers le spécialisé. C'est une forme de sélection implicite qui contredit les OA du Pacte."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Dans le TABOR, les 'indicateurs de dynamique collective' incluent notamment le taux de turn-over des directions. Pourquoi cet indicateur est-il systémiquement important ?",
+  "opts": [
+   "A. Car il permet de calculer les coûts de recrutement pour la FWB",
+   "B. Car l'instabilité des directions influence les résultats aux épreuves externes directement",
+   "C. Car la continuité du leadership est un facteur systémique clé pour la cohérence pédagogique et la mise en œuvre du plan de pilotage",
+   "D. Car les syndicats l'utilisent pour évaluer les conditions de travail des directeurs"
+  ],
+  "ans": 2,
+  "exp": "La <strong>continuité du leadership</strong> est un facteur systémique clé : un directeur change fréquemment = rupture dans la mise en œuvre du plan de pilotage, perte de mémoire institutionnelle, déstabilisation des équipes. C'est pourquoi cet indicateur révèle des risques systémiques que les résultats académiques seuls ne montrent pas."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Un DCO constate que trois écoles voisines ont chacune un objectif sur l'OA4 (réduire le redoublement) mais leurs stratégies sont identiques et peu innovantes. L'analyse systémique lui suggère :",
+  "opts": [
+   "A. D'imposer des stratégies différentes à chaque école pour éviter la redondance",
+   "B. D'explorer avec chaque école comment ses stratégies sont adaptées à sa situation spécifique, en valorisant les éventuelles pratiques innovantes qui émergent des interactions locales",
+   "C. De regrouper les trois écoles dans une même démarche collaborative supervisée par le DZ",
+   "D. De valider les plans sans commentaire car les objectifs sont conformes aux OA"
+  ],
+  "ans": 1,
+  "exp": "L'analyse systémique recommande d'<strong>explorer la contextualisation</strong> : les mêmes stratégies peuvent fonctionner différemment selon le contexte (équifinalité). Le DCO doit vérifier que chaque école a réellement adapté sa stratégie à sa situation, et valoriser les innovations qui émergent."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Le concept de 'feed-forward' (anticipation) en pensée systémique correspond à :",
+  "opts": [
+   "A. La rétroaction positive qui amplifie les effets positifs",
+   "B. La rétroaction négative qui stabilise le système",
+   "C. L'émergence d'une nouvelle propriété dans le système",
+   "D. L'anticipation des problèmes potentiels pour agir préventivement avant qu'ils ne se manifestent"
+  ],
+  "ans": 3,
+  "exp": "Le <strong>feed-forward</strong> est une logique d'<strong>anticipation</strong> : agir préventivement sur des signaux faibles avant que le problème ne soit manifeste. Exemple scolaire : repérer dès la 1re secondaire les élèves à risque de décrochage et intervenir immédiatement — avant que le décrochage soit effectif."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "L'application TABOR présente les indicateurs de l'école comparés à la moyenne des établissements de même profil ISE. Cette comparaison est systémiquement plus pertinente qu'une comparaison avec la moyenne générale FWB car :",
+  "opts": [
+   "A. Elle neutralise les effets des facteurs externes non contrôlables (contexte socio-économique) pour révéler la valeur ajoutée propre à l'école",
+   "B. Elle permet de classer les écoles de façon plus équitable pour l'attribution des discriminations positives",
+   "C. Elle réduit la charge de travail du DCO en limitant le nombre d'indicateurs à analyser",
+   "D. Elle est exigée par le décret du 13 septembre 2018 pour garantir l'équité entre réseaux"
+  ],
+  "ans": 0,
+  "exp": "La comparaison avec les 'comparables' <strong>neutralise les effets socio-économiques</strong> pour révéler la <strong>valeur ajoutée propre à l'école</strong>. Si une école défavorisée fait mieux que ses comparables, c'est la preuve d'une réelle performance systémique interne, indépendante du contexte."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Le profil de compétences DCO comprend 5 groupes. Lequel correspond à la capacité de construire des relations de confiance avec les interlocuteurs ?",
+  "opts": [
+   "A. Gestion des tâches (profil de base : Résoudre des problèmes)",
+   "B. Gestion des collaborateurs (profil de base : Soutenir)",
+   "C. Gestion des relations (profil de base : Conseiller)",
+   "D. Gestion de son fonctionnement (profil de base : S'adapter)"
+  ],
+  "ans": 2,
+  "exp": "La <strong>Gestion des relations</strong> (profil de base : <strong>Conseiller</strong>) correspond à la capacité de fournir des conseils et de développer une relation de confiance basée sur son expertise. C'est le cœur de la posture du DCO vis-à-vis des directeurs et des PO."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Lors d'une évaluation intermédiaire, un DCO constate que les objectifs ne sont pas atteints mais que les stratégies ont été sincèrement mises en œuvre. L'évaluation finale à 6 ans révèle la même situation. Que fait le DCO ?",
+  "opts": [
+   "A. Déclenche le dispositif EDA car l'école n'a pas atteint ses objectifs",
+   "B. Adresse un rapport au Gouvernement recommandant des sanctions contre le PO",
+   "C. Refuse de contractualiser un nouveau plan jusqu'à justification des échecs",
+   "D. Analyse avec l'école les raisons de la non-progression et accompagne l'élaboration d'un nouveau plan plus réaliste, axé sur des leviers systémiques différents"
+  ],
+  "ans": 3,
+  "exp": "L'obligation étant de <strong>moyens</strong>, la non-atteinte des objectifs ne déclenche pas de sanction si les stratégies ont été sincèrement mises en œuvre. Le DCO <strong>analyse les raisons et accompagne un nouveau plan</strong>. L'EDA ne s'applique que si les performances sont significativement en dessous des comparables — ce qui n'est pas le cas ici."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Le SGPE a pour mission principale de piloter les établissements scolaires et les CPMS. Concrètement, par rapport aux CPMS, où en est-on en 2026 ?",
+  "opts": [
+   "A. La contractualisation des plans de pilotage des CPMS est prévue mais encore en cours de déploiement",
+   "B. Les CPMS ont leur propre SGPE distinct, géré par la Direction des CPMS",
+   "C. Les CPMS ont été intégrés dans les plans de pilotage des établissements depuis 2022",
+   "D. Les CPMS sont exemptés du pilotage car ils relèvent d'une autre autorité de tutelle"
+  ],
+  "ans": 0,
+  "exp": "La contractualisation des plans de pilotage des CPMS est <strong>prévue</strong> par le décret (art. 7, 3°) mais encore <strong>en cours de déploiement</strong> en 2026. Les CPMS participent aux plans des établissements mais n'ont pas encore tous leurs propres contrats d'objectifs."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Un DCO analyse 12 plans de pilotage simultanément. Le guide PILOTAGE indique qu'il peut rencontrer l'équipe éducative lors de l'analyse. Quel principe systémique justifie cette démarche ?",
+  "opts": [
+   "A. La transparence : toutes les parties prenantes doivent être informées de l'analyse en cours",
+   "B. La compréhension du système nécessite d'observer et de comprendre les interactions entre acteurs, pas seulement de lire les documents",
+   "C. La légitimité : les enseignants doivent valider les recommandations du DCO",
+   "D. La neutralité : le DCO doit entendre toutes les parties avant de formuler une opinion"
+  ],
+  "ans": 1,
+  "exp": "Rencontrer l'équipe éducative répond à une logique systémique : <strong>comprendre le système nécessite d'observer les interactions entre acteurs</strong>, pas seulement de lire des documents. Les documents ne montrent pas la culture organisationnelle, les résistances implicites ou les dynamiques d'équipe — des facteurs systémiques déterminants."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "La Zone 'Huy-Waremme et Verviers' est particulière dans le SGPE. Qu'est-ce qui la distingue des autres zones en juillet 2025 (selon l'organigramme officiel) ?",
+  "opts": [
+   "A. Elle est gérée conjointement par deux DZ en raison de sa taille",
+   "B. Elle est directement supervisée par le Délégué coordonnateur sans DZ intermédiaire",
+   "C. Elle a été fusionnée avec la zone de Liège pour des raisons budgétaires",
+   "D. Son poste de DZ était vacant — c'est la seule zone sans DZ nommé"
+  ],
+  "ans": 3,
+  "exp": "Selon l'organigramme officiel de juillet 2025, la zone 'Huy-Waremme et Verviers' a son poste de DZ indiqué comme <strong>vacant (—)</strong>. C'est la seule zone sans DZ nommé, ce qui explique que l'on compte 9 DZ pour 10 zones."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "L'épreuve orale du recrutement DCO est prévue à partir du 15 juin 2026. Combien de candidats y accèdent ?",
+  "opts": [
+   "A. Les 150 mieux classés à l'épreuve écrite",
+   "B. Tous les candidats ayant obtenu au moins 25/50 à l'épreuve écrite",
+   "C. Les 200 premiers classés à l'épreuve écrite",
+   "D. Les candidats ayant obtenu au moins la moyenne (50%) à l'épreuve écrite"
+  ],
+  "ans": 0,
+  "exp": "Selon la circulaire 9669 : <strong>les 150 mieux classés</strong> à l'issue du volet écrit sont convoqués à l'oral. Ce chiffre est constant depuis la première circulaire de 2018/2019. L'oral est évalué sur 50 points, le minimum requis pour figurer dans le classement final est 50/100."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Le DCO exerce une 'posture d'accompagnateur expert'. Concrètement, cela signifie qu'il :",
+  "opts": [
+   "A. Contrôle la conformité légale des pratiques de classe lors de chaque visite",
+   "B. Évalue les compétences pédagogiques des enseignants et en informe le PO",
+   "C. Conseille, soutient et formule des recommandations motivées, sans pouvoir de sanction directe",
+   "D. Supervise le budget de l'établissement et approuve les dépenses liées au plan de pilotage"
+  ],
+  "ans": 2,
+  "exp": "La posture d'accompagnateur expert se traduit par : <strong>conseiller, soutenir et formuler des recommandations motivées</strong>, sans pouvoir de sanction directe. Le DCO n'est pas un inspecteur — il n'évalue pas les enseignants ni les pratiques de classe. Les sanctions (réduction de subventions, manager de crise) sont prises par le Gouvernement, pas par le DCO."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "La thématique 6 du plan de pilotage porte sur la citoyenneté, santé, éducation aux médias et environnement. Une école y décrit ses activités de sensibilisation à la radicalisation. Le DCO :",
+  "opts": [
+   "A. Demande à l'école de supprimer cette partie car la radicalisation n'est pas une compétence de l'enseignant",
+   "B. Valorise cette démarche car elle s'inscrit dans la thématique citoyenneté et prévention des discriminations",
+   "C. Transmet à la cellule de coordination nationale de lutte contre la radicalisation",
+   "D. Ignore cette partie car le plan de pilotage ne doit traiter que les objectifs pédagogiques mesurables"
+  ],
+  "ans": 1,
+  "exp": "Le DCO <strong>valorise cette démarche</strong> car elle s'inscrit dans la thématique 6 (éducation à la citoyenneté) et la thématique 7 (prévention des discriminations et violences). Cavillot lui-même a présenté les plans de pilotage comme une source d'information sur les pratiques d'éducation à la citoyenneté devant le Parlement."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Dans le dispositif EDA, le 'protocole de collaboration' est conclu pour une durée maximale de :",
+  "opts": [
+   "A. 1 an renouvelable 2 fois",
+   "B. 2 ans non renouvelables",
+   "C. 4 ans (identique au 1er cycle du plan de pilotage ordinaire)",
+   "D. 3 ans maximum"
+  ],
+  "ans": 3,
+  "exp": "Le protocole de collaboration (EDA) dure <strong>3 ans maximum</strong>. C'est différent du contrat d'objectifs ordinaire (6 ans). Après ces 3 ans, si l'école a progressé, elle intègre un plan ordinaire. Si les problèmes persistent, le dispositif peut être reconduit."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "Le guide PILOTAGE (Vol.1) précise que le DCO 'invite' l'école à se donner un objectif sur une dimension problématique identifiée dans les indicateurs. Cette formulation 'invite' signifie :",
+  "opts": [
+   "A. Le DCO recommande mais l'école conserve la responsabilité de définir son objectif spécifique",
+   "B. Le DCO impose l'objectif car les indicateurs le justifient objectivement",
+   "C. Le DCO peut uniquement suggérer, sans aucune possibilité de refuser le plan si l'école refuse",
+   "D. Le DCO demande l'aval du DZ avant de formuler cette invitation"
+  ],
+  "ans": 0,
+  "exp": "'Inviter' signifie que le DCO <strong>recommande mais que l'école conserve la responsabilité de définir son objectif</strong>. C'est conforme au principe d'autonomie : le DCO signale l'incohérence, mais c'est l'équipe éducative qui formule l'objectif en réponse à cette invitation."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Dans l'application PILOTAGE, quels éléments doivent être encodés avant soumission du plan au DCO pour attester de la consultation des instances ?",
+  "opts": [
+   "A. Uniquement les signatures électroniques du directeur et du PO",
+   "B. Le procès-verbal de la réunion du Conseil pédagogique et l'avis de l'Inspection",
+   "C. La date et le compte-rendu des consultations des OLCS et du CoPa",
+   "D. L'accord signé de chaque membre de l'équipe éducative"
+  ],
+  "ans": 2,
+  "exp": "Avant soumission au DCO, l'application PILOTAGE requiert l'encodage de la <strong>date et du compte-rendu des consultations des OLCS et du CoPa</strong>. L'absence de ces éléments rend visible le défaut procédural lors de l'analyse du DCO."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "Le guide EDA précise que dans le dispositif d'ajustement, les ressources 'PR' sont une obligation. Qu'est-ce que cela implique pour le Pouvoir Régulateur ?",
+  "opts": [
+   "A. Le Pouvoir Régulateur peut choisir les ressources à mettre à disposition selon son budget",
+   "B. Le Pouvoir Régulateur propose des ressources sur demande motivée de l'école",
+   "C. Le Pouvoir Régulateur peut déléguer cette obligation aux fédérations de PO",
+   "D. Le Pouvoir Régulateur a l'obligation de proposer et mettre à disposition des ressources spécifiques pour l'école EDA"
+  ],
+  "ans": 3,
+  "exp": "Dans le dispositif EDA, les ressources du Pouvoir Régulateur sont une <strong>obligation</strong> : le PR <strong>doit</strong> proposer et mettre à disposition des ressources particulières pour accompagner l'école. Ce n'est pas optionnel et ne dépend pas du budget disponible — c'est un engagement légal du système."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Parmi ces affirmations sur le plan de pilotage, laquelle est INCORRECTE ?",
+  "opts": [
+   "A. Le plan doit être cohérent avec les 7 OA du Pacte",
+   "B. L'école doit fixer un objectif spécifique pour chacun des 7 OA",
+   "C. Le plan contient un diagnostic, des objectifs et des stratégies",
+   "D. Les 3 stratégies transversales obligatoires doivent être présentes"
+  ],
+  "ans": 1,
+  "exp": "L'affirmation incorrecte est que l'école doit fixer un objectif pour <strong>chacun des 7 OA</strong>. En réalité, les objectifs spécifiques doivent <strong>contribuer à au moins un OA</strong> — l'école n'est pas obligée de couvrir tous les OA. Elle choisit ses priorités en fonction de son diagnostic."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "[Jugement situationnel] Un directeur vous appelle, visiblement stressé, pour vous dire que le PO vient de lui imposer d'intégrer dans le plan de pilotage un objectif qui ne correspond pas aux priorités identifiées par l'équipe éducative. Il vous demande de l'aide. Quelle est votre première démarche ?",
+  "opts": [
+   "A. Contacter directement le PO pour lui rappeler que le plan doit émerger d'une dynamique collective",
+   "B. Refuser d'analyser le plan jusqu'à ce que le conflit soit résolu en interne",
+   "C. Écouter le directeur pour comprendre la situation, puis lui rappeler que le plan doit refléter une dynamique collective (équipe + PO) et l'encourager à initier un dialogue interne",
+   "D. Transmettre au DZ pour qu'il intervienne auprès du PO"
+  ],
+  "ans": 2,
+  "exp": "La première démarche est d'<strong>écouter et d'accompagner</strong> : comprendre la situation, rappeler le cadre (dynamique collective obligatoire) et encourager le dialogue interne entre la direction et le PO. Le DCO n'intervient pas directement auprès du PO à ce stade — il soutient le directeur dans sa démarche."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "[Jugement situationnel] Lors d'une rencontre avec une équipe éducative, un enseignant vous dit directement : 'Ce plan de pilotage, c'est du travail en plus imposé par la FWB, ça ne changera rien pour les élèves.' Comment répondez-vous ?",
+  "opts": [
+   "A. Reconnaître la charge de travail réelle que le plan représente, tout en expliquant son rôle de levier systémique pour les élèves, et inviter l'enseignant à identifier comment ses pratiques pourraient s'y inscrire",
+   "B. Rappeler fermement que le plan est une obligation légale à laquelle toute l'équipe doit se conformer",
+   "C. Proposer à l'enseignant de ne pas participer à l'élaboration du plan pour ne pas créer de tensions dans l'équipe",
+   "D. Ignorer le commentaire et continuer la présentation du cadre légal du plan de pilotage"
+  ],
+  "ans": 0,
+  "exp": "La réponse correcte <strong>reconnaît la réalité de la charge</strong> (crédibilité) tout en <strong>expliquant le sens</strong> du plan pour les élèves, et <strong>invite</strong> l'enseignant à voir comment ses pratiques peuvent s'y inscrire (appropriation). C'est le profil 'Conseiller' du DCO : développer la relation de confiance en combinant empathie et expertise."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "[Jugement situationnel] Vous analysez un plan de pilotage qui présente un diagnostic très riche et nuancé, mais dont les objectifs spécifiques sont très vagues ('améliorer la réussite des élèves', 'renforcer la collaboration'). Votre analyse conclut à :",
+  "opts": [
+   "A. L'approbation du plan car la qualité du diagnostic compense la vagueur des objectifs",
+   "B. Un refus immédiat car les objectifs ne respectent pas les critères SMART",
+   "C. La transmission à l'Inspection pour audit avant toute décision",
+   "D. Des recommandations motivées demandant à l'école de reformuler ses objectifs avec plus de précision pour permettre une évaluation de la mise en œuvre"
+  ],
+  "ans": 3,
+  "exp": "Des objectifs trop vagues rendent impossible l'évaluation de la mise en œuvre. Le DCO émet des <strong>recommandations motivées</strong> pour que l'école reformule ses objectifs avec plus de précision. Ce n'est pas un refus brutal — c'est un accompagnement vers la qualité. L'AGCF ne mentionne pas les critères SMART comme obligation légale."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "[Jugement situationnel] Un PO vous contacte pour vous demander si son directeur peut consulter le plan de pilotage d'une autre école de son réseau pour s'en inspirer. Votre réponse est :",
+  "opts": [
+   "A. Oui, le partage de bonnes pratiques est encouragé par le Pacte et les plans sont des documents publics",
+   "B. Non, les plans de pilotage sont confidentiels mais vous pouvez faciliter des échanges de pratiques inter-établissements sans communication des plans eux-mêmes",
+   "C. Oui, si les deux PO et les deux directeurs donnent leur accord écrit",
+   "D. Non, uniquement l'Inspection peut consulter les plans d'autres établissements"
+  ],
+  "ans": 1,
+  "exp": "Les plans de pilotage sont <strong>confidentiels</strong> — ils ne peuvent pas être communiqués à d'autres établissements. Mais le DCO peut <strong>faciliter des échanges de pratiques</strong> entre établissements sans partager les documents confidentiels. C'est la logique du réseau d'acteurs que le DCO anime."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "La 'gouvernance partagée' dans le Pacte désigne la répartition des responsabilités entre :",
+  "opts": [
+   "A. La FWB, les PO et les syndicats d'enseignants",
+   "B. Les IBEFE, les bassins EFE et les fédérations de PO",
+   "C. Le SGPE, l'Inspection et la Commission de pilotage",
+   "D. La FWB (cadre et OA), les PO (autonomie pédagogique) et les écoles (opérationnalisation du plan)"
+  ],
+  "ans": 3,
+  "exp": "La gouvernance partagée distribue les rôles entre : la <strong>FWB</strong> (fixe le cadre légal et les OA), les <strong>PO</strong> (organisent dans leur autonomie pédagogique), et les <strong>écoles</strong> (élaborent et mettent en œuvre le plan). Le DCO est le médiateur qui accompagne ce dispositif à l'articulation de ces niveaux."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Dans l'analyse d'un plan de pilotage, 'voir les relations plutôt que les choses' signifie concrètement :",
+  "opts": [
+   "A. Analyser comment les interactions entre acteurs (direction, enseignants, élèves, PO) créent des dynamiques qui influencent les résultats",
+   "B. Lire attentivement les relations entre les différentes parties du document plan",
+   "C. Évaluer les relations interpersonnelles dans l'équipe éducative",
+   "D. Vérifier la cohérence des relations contractuelles entre le PO, l'école et la FWB"
+  ],
+  "ans": 0,
+  "exp": "'Voir les relations' signifie analyser comment les <strong>interactions entre acteurs créent des dynamiques systémiques</strong>. Est-ce que la direction soutient vraiment le travail collaboratif ? Est-ce que les enseignants se font confiance ? Est-ce que le PO et la direction partagent la même vision ? Ces interactions déterminent la capacité de changement."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "L'enseignement 'en alternance' (CEFA) combine :",
+  "opts": [
+   "A. L'enseignement à domicile et les stages en établissement scolaire",
+   "B. L'enseignement fondamental et secondaire dans un même établissement",
+   "C. Des heures à l'école et du temps en entreprise via un contrat d'apprentissage ou d'alternance",
+   "D. Deux langues d'enseignement dans un même programme scolaire"
+  ],
+  "ans": 2,
+  "exp": "L'enseignement en alternance (CEFA) combine des <strong>heures à l'école et du temps en entreprise</strong> via un <strong>contrat d'apprentissage ou d'alternance</strong>. Il s'adresse aux jeunes de 15 à 21 ans et permet d'obtenir un certificat de qualification."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Lors d'une évaluation intermédiaire, le DCO peut 'solliciter la réalisation d'une procédure d'audit externe'. Qui réalise cet audit ?",
+  "opts": [
+   "A. Le Délégué coordonnateur, avec l'appui de DCO d'autres zones",
+   "B. Le Service général de l'Inspection",
+   "C. Un bureau d'audit externe agréé par la FWB",
+   "D. Le DZ, assisté du DCO de l'établissement concerné"
+  ],
+  "ans": 1,
+  "exp": "L'audit externe est réalisé par le <strong>Service général de l'Inspection</strong>. Le DCO peut en faire la demande lors d'une évaluation intermédiaire, mais c'est l'Inspection qui est mandatée pour cette mission — maintenant une séparation claire des rôles entre accompagnement (DCO) et contrôle (Inspection)."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Dans le plan de pilotage, la thématique 14 porte sur :",
+  "opts": [
+   "A. La maintenance et l'amélioration des infrastructures scolaires",
+   "B. La politique de frais scolaires",
+   "C. Les partenariats avec les entreprises pour le qualifiant",
+   "D. L'insertion des outils numériques dans les apprentissages"
+  ],
+  "ans": 0,
+  "exp": "La <strong>thématique 14</strong> porte sur la <strong>maintenance et l'amélioration des infrastructures scolaires</strong> : état des bâtiments, accessibilité, qualité des espaces d'apprentissage. C'est une dimension souvent négligée dans le pilotage mais qui a un impact réel sur le bien-être et les conditions d'apprentissage."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Un établissement secondaire refuse de mettre en œuvre la stratégie de tronc commun car 'nos 3e secondaire fonctionnent très bien avec l'ancien système'. Comment le DCO argumente-t-il ?",
+  "opts": [
+   "A. Il accepte l'argument si l'école peut prouver par ses indicateurs que ses résultats sont supérieurs à la moyenne",
+   "B. Il transmet directement au DZ car c'est une violation du décret",
+   "C. Il explique que la mise en œuvre du tronc commun est une stratégie transversale obligatoire du plan, indépendante des résultats actuels, car elle vise une équité systémique à long terme",
+   "D. Il propose un délai supplémentaire de 2 ans pour que l'école adapte progressivement ses pratiques"
+  ],
+  "ans": 2,
+  "exp": "La mise en œuvre du tronc commun est une des <strong>3 stratégies transversales obligatoires</strong>. Ce n'est pas négociable sur base des résultats actuels — même une bonne école doit s'y inscrire car c'est un enjeu d'<strong>équité systémique à long terme</strong> qui dépasse la situation individuelle de l'établissement."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Le décret du 12 décembre 2008 modifiant le décret du 30 juin 1998 a introduit le 'premier degré différencié'. Quel est l'enjeu systémique de cette mesure ?",
+  "opts": [
+   "A. Réduire les coûts de l'enseignement spécialisé en maintenant plus d'élèves dans l'ordinaire",
+   "B. Permettre aux bons élèves d'accélérer leur parcours pour libérer des places en 1re secondaire",
+   "C. Créer des classes de niveau homogène pour améliorer les résultats aux épreuves externes",
+   "D. Offrir une alternative au redoublement systématique et à l'orientation prématurée vers le spécialisé pour les élèves sans CEB"
+  ],
+  "ans": 3,
+  "exp": "L'enjeu systémique est d'<strong>offrir une alternative</strong> : éviter que les élèves sans CEB soient soit systématiquement orientés vers le spécialisé (OA6), soit contraints de redoubler leur 6e primaire (OA4). Le 1er degré différencié crée une troisième voie dans la logique du continuum pédagogique."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Un DCO analyse deux plans de pilotage d'écoles défavorisées. La première a des objectifs modestes mais des stratégies innovantes et bien articulées. La seconde a des objectifs ambitieux mais des stratégies vagues et déjà utilisées sans succès. Laquelle approuve-t-il ?",
+  "opts": [
+   "A. La seconde car l'ambition des objectifs montre l'engagement de l'école",
+   "B. La première car la cohérence entre diagnostic, objectifs réalistes et stratégies innovantes est systémiquement plus prometteuse",
+   "C. Les deux car l'approbation ne dépend pas de la qualité pédagogique des stratégies",
+   "D. Ni l'une ni l'autre car elles ne satisfont pas toutes les deux aux exigences légales"
+  ],
+  "ans": 1,
+  "exp": "Le DCO approuve la <strong>première</strong> : des objectifs modestes mais réalistes + des stratégies innovantes et bien articulées est systémiquement plus solide. La seconde présente une <strong>erreur manifeste d'appréciation</strong> : des objectifs ambitieux combinés à des stratégies qui ont déjà échoué révèlent une incohérence diagnostique."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "La compétence 'Gérer son stress' est particulièrement évaluée lors :",
+  "opts": [
+   "A. De l'épreuve orale devant le jury, où les candidats font face à des situations complexes et imprévues",
+   "B. De l'épreuve écrite QCM, via des questions à résoudre sous pression temporelle",
+   "C. Du stage probatoire, via une évaluation mensuelle par le DZ",
+   "D. De la nomination définitive, par un bilan psychologique réalisé par l'Administration"
+  ],
+  "ans": 0,
+  "exp": "La compétence 'Gérer son stress' (profil de base 'S'adapter', gestion de son fonctionnement) est principalement évaluée à l'<strong>épreuve orale</strong>, où les candidats sont confrontés à des situations complexes et imprévues nécessitant de garder son calme et sa clarté."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Depuis le décret du 14 juillet 2015, un élève peut être dispensé des cours convictionnels dans l'enseignement officiel. Qu'est-il obligé de faire pendant ces heures ?",
+  "opts": [
+   "A. Rester à la maison ou partir plus tôt selon les horaires",
+   "B. Suivre un encadrement pédagogique alternatif organisé par l'école",
+   "C. Choisir une activité sportive ou culturelle dans l'établissement",
+   "D. Rejoindre la classe d'un cours convictionnel au choix pour l'observation"
+  ],
+  "ans": 1,
+  "exp": "L'élève dispensé doit suivre un <strong>encadrement pédagogique alternatif</strong> organisé par l'école. Il ne peut pas simplement rentrer chez lui. L'école a l'obligation d'organiser cet encadrement pendant les heures libérées par la dispense."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "Dans le guide PILOTAGE, la 'valeur de référence' associée à un objectif spécifique est :",
+  "opts": [
+   "A. La valeur que l'école doit obligatoirement atteindre à l'issue du contrat d'objectifs",
+   "B. La moyenne nationale des écoles FWB sur cet indicateur",
+   "C. La valeur fixée par le DCO comme minimum acceptable de progression",
+   "D. La cible chiffrée que l'école se fixe elle-même, confidentielle et non opposable comme obligation de résultat"
+  ],
+  "ans": 3,
+  "exp": "La valeur de référence est la <strong>cible chiffrée que l'école se fixe elle-même</strong>. Elle est <strong>confidentielle</strong> et ne constitue pas une obligation de résultat. Ne pas l'atteindre n'est pas sanctionnable en soi — c'est la mise en œuvre des stratégies qui est évaluée."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Le SeGEC est la fédération des PO de l'enseignement libre confessionnel. Quel pourcentage approximatif des établissements FWB représente ce réseau ?",
+  "opts": [
+   "A. Environ 25% des établissements FWB",
+   "B. Environ 40% des établissements FWB",
+   "C. Environ 55-60% des établissements FWB",
+   "D. Environ 70% des établissements FWB"
+  ],
+  "ans": 2,
+  "exp": "Le réseau libre catholique (SeGEC) représente environ <strong>55-60% des établissements scolaires FWB</strong>. C'est le réseau le plus important en nombre d'établissements et d'élèves, suivi de l'officiel organisé (WBE) et de l'officiel subventionné."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Le DCO 'formule des avis et propositions au Gouvernement'. Dans quel cadre ?",
+  "opts": [
+   "A. Uniquement lors des évaluations finales des contrats d'objectifs",
+   "B. Sur tout ce qui relève de sa compétence, d'initiative ou à la demande du Gouvernement",
+   "C. Uniquement sur les établissements en dispositif EDA (art. 68)",
+   "D. Uniquement sur les aspects liés aux épreuves externes certificatives"
+  ],
+  "ans": 1,
+  "exp": "Le DCO peut formuler des <strong>avis et propositions au Gouvernement sur tout ce qui relève de sa compétence</strong> — d'initiative ou à la demande. C'est l'art. 7, 5° du décret 2018. C'est une mission moins connue mais importante : le DCO est une source d'expertise de terrain pour l'amélioration du système."
+ },
+ {
+  "cat": "systheo",
+  "diff": "facile",
+  "q": "Qu'est-ce qu'une 'émergence' dans un système scolaire ?",
+  "opts": [
+   "A. L'apparition d'un nouveau texte légal modifiant l'organisation de l'école",
+   "B. La progression rapide d'un élève grâce à un dispositif de soutien individualisé",
+   "C. L'arrivée imprévue d'un grand nombre de primo-arrivants dans l'établissement",
+   "D. Une propriété du système global qui n'existe pas dans ses parties isolées, comme le 'climat scolaire'"
+  ],
+  "ans": 3,
+  "exp": "Une <strong>émergence</strong> est une propriété qui naît des interactions entre les éléments du système mais n'appartient à aucun d'eux séparément. Le 'climat scolaire', la 'culture d'établissement', la 'réputation' d'une école sont des exemples d'émergences systémiques."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "La 'Commission de pilotage' du système éducatif FWB a pour rôle :",
+  "opts": [
+   "A. De veiller à la cohérence entre les socles, compétences terminales, outils d'évaluation et programmes",
+   "B. De superviser les DCO et DZ dans leur travail d'accompagnement",
+   "C. De gérer les recours des établissements contre les décisions du DCO",
+   "D. D'allouer les ressources entre les réseaux d'enseignement selon les résultats"
+  ],
+  "ans": 0,
+  "exp": "La <strong>Commission de pilotage</strong> est chargée de la cohérence curriculaire : elle veille à l'articulation entre les <strong>socles de compétences, compétences terminales, outils d'évaluation et programmes</strong>. Elle joue un rôle de régulation globale du curriculum — différente du SGPE (pilotage des écoles)."
+ },
+ {
+  "cat": "etab",
+  "diff": "difficile",
+  "q": "Le type 5 de l'enseignement spécialisé peut se dérouler dans trois contextes différents. Lesquels ?",
+  "opts": [
+   "A. En classe ordinaire, en classe intégrée et en institution spécialisée",
+   "B. En établissement scolaire hospitalier, en classe à l'hôpital, ou avec un enseignant à domicile",
+   "C. En centre de jour, en hôpital psychiatrique ou en établissement de réadaptation",
+   "D. En établissement spécialisé type 5, en intégration permanente ou en intégration temporaire"
+  ],
+  "ans": 1,
+  "exp": "Le type 5 (élèves malades) peut se dérouler : dans un <strong>établissement scolaire hospitalier</strong> (intégré dans un hôpital), dans une <strong>classe temporaire à l'hôpital</strong> organisée par un établissement ordinaire ou spécialisé, ou via un <strong>enseignant à domicile</strong> pour la convalescence."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "Lors d'une évaluation intermédiaire, un DCO constate que les enseignants ne participent pas au travail collaboratif obligatoire. Le directeur dit que 'le PO n'a pas organisé les heures nécessaires'. Comment le DCO procède-t-il ?",
+  "opts": [
+   "A. Considère que c'est un problème interne et attend la fin du contrat pour évaluer",
+   "B. Contacte directement le PO pour l'obliger à libérer des heures de concertation",
+   "C. Identifie un dysfonctionnement systémique et accompagne l'école à trouver une solution (dialogue direction-PO, ajustement du règlement de travail)",
+   "D. Déclenche immédiatement le dispositif EDA car la stratégie obligatoire n'est pas mise en œuvre"
+  ],
+  "ans": 2,
+  "exp": "Le DCO <strong>identifie un dysfonctionnement systémique</strong> et accompagne : il aide l'école à comprendre le problème (entre direction et PO) et à trouver une solution (ajustement du règlement de travail, discussion sur l'organisation). Ce n'est pas encore l'EDA — c'est d'abord le dialogue constructif de l'évaluation intermédiaire."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "La thématique 10 du plan de pilotage porte sur :",
+  "opts": [
+   "A. Les dispositifs d'accrochage scolaire et de prévention du décrochage",
+   "B. L'apprentissage et l'accès aux activités sportives",
+   "C. L'insertion des outils numériques dans les apprentissages",
+   "D. Le partenariat et la collaboration avec les parents (en lien avec le Conseil de participation)"
+  ],
+  "ans": 3,
+  "exp": "La <strong>thématique 10</strong> porte sur le <strong>partenariat et la collaboration avec les parents</strong>, en lien avec le Conseil de participation (CoPa). Elle vise à documenter comment l'école associe les parents à sa vie et à ses projets pédagogiques."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Le Livre 1 du Code de l'enseignement introduit 5 missions (les 4 du décret Missions + 1 nouvelle). Quelle est cette 5e mission ?",
+  "opts": [
+   "A. La maîtrise de la langue française",
+   "B. Le développement des compétences numériques",
+   "C. L'éducation à la durabilité environnementale",
+   "D. La préparation à la vie professionnelle et citoyenne"
+  ],
+  "ans": 0,
+  "exp": "Le Code ajoute à la liste du décret Missions la <strong>maîtrise de la langue française</strong> comme mission explicite. Cette ajout reflète l'importance du français comme vecteur d'émancipation sociale et outil transversal de tous les apprentissages."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Selon Cavillot devant le Parlement, comment qualifie-t-il le plan de pilotage par rapport à une réponse à une crise ponctuelle ?",
+  "opts": [
+   "A. Le plan est précisément conçu pour répondre aux crises et doit pouvoir être modifié immédiatement",
+   "B. Le plan n'est pas une réponse à une crise ou un phénomène unique, mais se construit au départ de la culture et des problèmes en fil rouge de l'école",
+   "C. Le plan est plus urgent que la gestion de crise car il prévient les problèmes à long terme",
+   "D. Le plan peut être suspendu temporairement en cas de crise grave pour concentrer les ressources"
+  ],
+  "ans": 1,
+  "exp": "Cavillot dit explicitement : le plan <strong>'n'est pas nécessairement une réponse à une crise ou à un phénomène unique qui apparaît en classe, mais qui est vraiment ce qui se taille au départ de la culture et des problèmes en fil rouge de l'école.'</strong> C'est une vision stratégique à long terme, pas une gestion de crise."
+ },
+ {
+  "cat": "systheo",
+  "diff": "facile",
+  "q": "Pourquoi dit-on qu'une école est un 'système ouvert' ?",
+  "opts": [
+   "A. Parce que ses portes sont ouvertes à tous les élèves sans discrimination",
+   "B. Parce que ses programmes sont accessibles à tous les acteurs qui le souhaitent",
+   "C. Parce que son mode de gouvernance est transparent et participatif",
+   "D. Parce qu'elle échange constamment des ressources, de l'information et de l'énergie avec son environnement"
+  ],
+  "ans": 3,
+  "exp": "Une école est un <strong>système ouvert</strong> car elle <strong>échange constamment</strong> avec son environnement : elle reçoit des élèves (inputs), interagit avec les familles, la FWB, les entreprises, et produit des diplômés et des citoyens (outputs). Elle n'est pas auto-suffisante — elle dépend de son contexte."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Le 'Conseil de participation' (CoPa) a été créé par quel texte et quand est-il devenu fonctionnel ?",
+  "opts": [
+   "A. Créé par le décret du 2 février 2007, fonctionnel depuis septembre 2007",
+   "B. Créé par le Code de l'enseignement (2019), fonctionnel depuis septembre 2020",
+   "C. Créé par le décret Missions de 1997, fonctionnel depuis janvier 1998",
+   "D. Créé par le décret du 13 septembre 2018, fonctionnel depuis septembre 2019"
+  ],
+  "ans": 2,
+  "exp": "Le CoPa a été créé par le <strong>décret Missions du 24 juillet 1997 (art. 69)</strong> et est fonctionnel depuis <strong>janvier 1998</strong>. Il précède donc le Pacte de 20 ans et a été renforcé dans son rôle depuis la mise en place du plan de pilotage (avis obligatoire avant signature)."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "L'OA2 du Pacte vise à atteindre 85% de jeunes diplômés du secondaire supérieur d'ici 2030. La situation de départ en 2016 était de :",
+  "opts": [
+   "A. 71% (situation jugée très préoccupante)",
+   "B. 79% (situation à améliorer selon Eurostat)",
+   "C. 83% (proche de l'objectif)",
+   "D. 65% (situation critiquée par le Groupe central)"
+  ],
+  "ans": 1,
+  "exp": "La situation de départ en <strong>2016</strong> était de <strong>79%</strong> selon Eurostat. L'objectif est d'atteindre 85% en 2030. Ce n'est pas un écart gigantesque (6 points) mais il représente un effort systémique important pour un système qui perd encore trop d'élèves avant le diplôme."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "difficile",
+  "q": "Dans le cadre du dispositif EDA, la principale différence concernant le diagnostic par rapport au plan ordinaire est :",
+  "opts": [
+   "A. Le diagnostic est réalisé par l'Inspection (externe) et non par l'école elle-même",
+   "B. Le diagnostic est réalisé par le DCO seul sans participation de l'école",
+   "C. Le diagnostic est réalisé par la Fédération de PO de l'établissement",
+   "D. Le diagnostic est réalisé conjointement par le DZ et le Délégué coordonnateur"
+  ],
+  "ans": 0,
+  "exp": "Dans le dispositif EDA, c'est le <strong>Service général de l'Inspection</strong> qui réalise le diagnostic (audit externe). C'est la différence fondamentale avec le plan ordinaire où l'école réalise elle-même son diagnostic. Cette externalisation garantit une analyse objective d'une école en difficulté significative."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Lors d'une rencontre avec une école, un DCO entend un enseignant affirmer que 'le travail collaboratif est une perte de temps car on est plus efficace chacun dans sa classe'. Quelle réponse illustre le mieux le profil DCO ?",
+  "opts": [
+   "A. 'Vous avez tort — le travail collaboratif est prouvé scientifiquement plus efficace'",
+   "B. 'C'est votre droit de penser ainsi mais vous êtes obligé légalement de y participer'",
+   "C. 'Je comprends votre ressenti — montrez-moi les résultats que vous obtenez seul'",
+   "D. 'Je comprends cette perception. Pouvez-vous me dire ce que vous faites actuellement qui fonctionne bien ? Nous pourrions partir de là pour voir comment le partager avec vos collègues de façon utile pour tous'"
+  ],
+  "ans": 3,
+  "exp": "La réponse D illustre le profil <strong>'Conseiller'</strong> : reconnaître la perspective de l'enseignant (relation de confiance), valoriser ce qui fonctionne, et ouvrir vers le partage de pratiques. Ce n'est ni une confrontation (A, B) ni une validation passante (C) — c'est un accompagnement professionnel vers le sens du travail collaboratif."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le Pacte compte combien de chantiers de mise en œuvre opérationnels ?",
+  "opts": [
+   "A. 12 chantiers articulés autour des 5 axes stratégiques",
+   "B. 15 chantiers correspondant aux 15 thématiques du plan de pilotage",
+   "C. 18 ou 19 chantiers selon les versions, traduisant les mesures en décrets",
+   "D. 7 chantiers correspondant aux 7 objectifs d'amélioration"
+  ],
+  "ans": 2,
+  "exp": "Le Pacte compte <strong>18 chantiers</strong> selon la source officielle initiale (certaines sources mentionnent 19 avec des ajouts ultérieurs). Ces chantiers opérationnalisent les 5 axes en décrets et textes réglementaires. Le <strong>chantier 6</strong> est directement lié au DCO : il déploie le nouveau cadre de pilotage contractualisant les relations entre le pouvoir régulateur et les écoles."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le chantier 6 du Pacte a directement donné naissance à quel texte légal fondamental pour le DCO ?",
+  "opts": [
+   "A. Le Code de l'enseignement fondamental et secondaire (Livre 1, 2019)",
+   "B. Le décret du 14 mars 2019 sur l'organisation du travail",
+   "C. L'AGCF du 22 mai 2019 fixant le profil de compétences DCO",
+   "D. Le décret du 13 septembre 2018 créant le SGPE et les fonctions DCO/DZ"
+  ],
+  "ans": 3,
+  "exp": "Le <strong>chantier 6</strong> (déployer un nouveau cadre de pilotage contractualisant les relations entre le pouvoir régulateur et les écoles) a directement donné naissance au <strong>décret du 13 septembre 2018</strong> qui crée le SGPE, les fonctions DCO et DZ, et introduit les articles 67 et 68 dans le décret Missions."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Le chantier 10 du Pacte a conduit à quel texte législatif ?",
+  "opts": [
+   "A. Le Livre 6 du Code de l'enseignement (FPC — décret du 17 juin 2021)",
+   "B. Le décret du 14 mars 2019 sur l'organisation du travail",
+   "C. Le décret du 13 septembre 2018 sur le SGPE",
+   "D. Le Code de l'enseignement Livre 2 sur le tronc commun"
+  ],
+  "ans": 0,
+  "exp": "Le <strong>chantier 10</strong> (formation professionnelle continue) a conduit au <strong>Livre 6 du Code de l'enseignement</strong> (décret du 17 juin 2021, en vigueur 2022-2023). C'est le texte qui organise la FPC pour tous les membres des équipes éducatives et du personnel CPMS."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "[Jugement situationnel] Lors de votre première rencontre avec une école pour présenter le plan de pilotage, le directeur vous dit : 'Je suis directeur depuis 25 ans, j'ai toujours bien géré mon école, je n'ai pas besoin qu'on me dise quoi faire.' Quelle est votre approche ?",
+  "opts": [
+   "A. Rappeler fermement que le plan de pilotage est une obligation légale depuis 2018",
+   "B. Reconnaître son expérience et sa connaissance de l'école, puis expliquer que le plan de pilotage n'est pas un contrôle mais un outil qu'il peut s'approprier pour formaliser ce qu'il fait déjà bien",
+   "C. Passer outre ses réticences et présenter le cadre légal sans vous attarder sur ses objections",
+   "D. Contacter le PO pour signaler le manque de coopération du directeur"
+  ],
+  "ans": 1,
+  "exp": "La réponse B illustre parfaitement le profil <strong>'Conseiller'</strong> du DCO : <strong>reconnaître l'expertise</strong> de l'interlocuteur (créer la relation de confiance) puis <strong>repositionner le plan comme un outil d'appropriation</strong> et non de contrôle. Un directeur expérimenté a souvent de bonnes pratiques à formaliser — le plan peut valoriser ce travail."
+ },
+ {
+  "cat": "systheo",
+  "diff": "moyen",
+  "q": "Dans la pensée systémique, 'optimiser chaque partie séparément' peut dégrader le système global. Quel exemple scolaire illustre ce principe ?",
+  "opts": [
+   "A. Former les enseignants individuellement améliore toujours les résultats collectifs",
+   "B. Augmenter le budget d'une matière réduit automatiquement les inégalités",
+   "C. Améliorer les résultats d'une classe en regroupant les meilleurs élèves améliore les résultats globaux de l'école",
+   "D. Augmenter drastiquement les heures de maths peut améliorer les résultats en maths mais dégrader le bien-être et les résultats dans d'autres matières"
+  ],
+  "ans": 3,
+  "exp": "Optimiser la partie 'mathématiques' (plus d'heures) peut <strong>dégrader le système global</strong> en réduisant le bien-être des élèves et les résultats dans d'autres matières. C'est la sous-optimisation : améliorer une partie isolément peut nuire au tout. La pensée systémique cherche à optimiser l'ensemble, pas les parties séparément."
+ },
+ {
+  "cat": "etab",
+  "diff": "moyen",
+  "q": "Dans l'enseignement secondaire, le 'premier degré' (1re et 2e secondaire) fait partie du tronc commun depuis le Pacte. Quelle est la conséquence sur les options ?",
+  "opts": [
+   "A. Les options disparaissent totalement en 1re et 2e secondaire",
+   "B. Les options de différenciation remplacent les anciennes options de base — le tronc commun est identique pour tous",
+   "C. Les élèves peuvent choisir entre des options techniques dès la 1re secondaire",
+   "D. Les options restent inchangées car le décret du 29 juillet 1992 n'a pas été modifié"
+  ],
+  "ans": 1,
+  "exp": "Dans le tronc commun, les <strong>options de base disparaissent</strong> au 1er degré — remplacées par des <strong>options de différenciation</strong> (approfondissement ou remédiation). Le cursus de base est identique pour tous les élèves jusqu'à la 3e secondaire. C'est précisément l'objectif : retarder la filiarisation."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "L'épreuve écrite DCO dure 4 heures. Le vendredi 16 mai 2026, elle se déroule de :",
+  "opts": [
+   "A. 9h30 à 13h30, Auditoire De Méan, Bât. B31, Place des Orateurs 3, 4000 Liège",
+   "B. 9h00 à 13h00, Auditoire De Méan, Bât. B31, Place des Orateurs 3, 4000 Liège",
+   "C. 10h00 à 14h00, Salle du Conseil, Bât. A, Boulevard Léopold II, 1080 Bruxelles",
+   "D. 9h30 à 13h30, Palais des Congrès, Esplanade de l'Europe 3, 4020 Liège"
+  ],
+  "ans": 0,
+  "exp": "Selon la circulaire 9669 : l'épreuve écrite se déroule le <strong>samedi 16 mai 2026</strong> de <strong>9h30 à 13h30</strong> à l'<strong>Auditoire De Méan, Bâtiment B31, Place des Orateurs 3, 4000 Liège</strong>. Les candidats doivent se présenter à <strong>9h15 au plus tard</strong> munis de leur carte d'identité."
+ },
+ {
+  "cat": "pacte",
+  "diff": "difficile",
+  "q": "Le chantier 14 du Pacte vise à 'décloisonner l'enseignement spécialisé'. Concrètement, cela a conduit à la création de :",
+  "opts": [
+   "A. Des classes intégrées dans chaque école secondaire accueillant des élèves du spécialisé",
+   "B. Des 'zones d'inclusion' géographiques où l'enseignement spécialisé est interdit",
+   "C. Des pôles territoriaux : structures attachées à une école spécialisée fournissant des expertises aux écoles ordinaires",
+   "D. Des classes mixtes regroupant élèves ordinaires et spécialisés dans les mêmes locaux"
+  ],
+  "ans": 2,
+  "exp": "Le chantier 14 a conduit aux <strong>pôles territoriaux</strong> : structures attachées à une école spécialisée, composées d'enseignants et de paramédicaux spécialisés qui interviennent dans les écoles ordinaires pour soutenir l'inclusion. C'est le mécanisme concret de l'OA6 du Pacte."
+ },
+ {
+  "cat": "system",
+  "diff": "moyen",
+  "q": "Le chantier 15 du Pacte (rythmes scolaires) a introduit une nouvelle organisation du calendrier scolaire. Quelle est-elle ?",
+  "opts": [
+   "A. Semaine de 4 jours pour libérer le vendredi à la formation des enseignants",
+   "B. Journées scolaires plus longues (8h-17h) pour réduire le nombre de jours",
+   "C. Trimestres de 12 semaines avec vacances uniformes entre chaque trimestre",
+   "D. Alternance de 7 semaines de cours et 2 semaines de congé, avec 14 semaines de vacances mieux réparties"
+  ],
+  "ans": 3,
+  "exp": "Le chantier 15 a introduit une <strong>alternance de 7 semaines de cours et 2 semaines de congé</strong>, conservant <strong>14 semaines de vacances</strong> mieux réparties sur l'année. L'objectif est de réduire la fatigue en fin de longues périodes scolaires et d'améliorer le bien-être (OA7)."
+ },
+ {
+  "cat": "dco",
+  "diff": "difficile",
+  "q": "[Jugement situationnel] Un PO vous contacte pour vous demander d'analyser le plan de pilotage d'une de ses écoles en urgence car il veut signer le contrat avant les vacances d'été. Votre réponse est :",
+  "opts": [
+   "A. Accepter immédiatement pour maintenir de bonnes relations avec le PO",
+   "B. Expliquer que le délai légal de 60 jours calendrier s'impose et ne peut être raccourci, mais que vous ferez votre possible pour prioriser l'analyse",
+   "C. Refuser catégoriquement et rappeler que les délais légaux ne souffrent aucune exception",
+   "D. Demander au DZ de décider si une dérogation au délai est possible dans ce cas"
+  ],
+  "ans": 1,
+  "exp": "La bonne réponse combine <strong>respect du cadre légal</strong> (60 jours calendrier, non négociable) et <strong>bonne volonté</strong> (prioriser l'analyse). Le DCO ne peut pas raccourcir le délai légal — mais il peut s'organiser pour réaliser l'analyse dans les meilleurs délais. C'est la posture professionnelle : ferme sur le cadre, souple sur l'organisation."
+ },
+ {
+  "cat": "systheo",
+  "diff": "facile",
+  "q": "Quelle est la différence fondamentale entre un 'problème simple' et un 'problème complexe' dans la pensée systémique ?",
+  "opts": [
+   "A. Un problème simple a une cause unique et une solution directe ; un problème complexe a des causes multiples en interaction",
+   "B. Un problème simple concerne un seul acteur ; un problème complexe concerne plusieurs acteurs",
+   "C. Un problème simple est résolu rapidement ; un problème complexe nécessite plus de temps",
+   "D. Un problème simple est pédagogique ; un problème complexe est organisationnel"
+  ],
+  "ans": 0,
+  "exp": "Un <strong>problème simple</strong> a une cause unique et une solution directe (changer une ampoule). Un <strong>problème complexe</strong> a des <strong>causes multiples en interaction</strong> dont les effets sont non-linéaires et difficiles à prédire (le décrochage scolaire). L'enseignement est un domaine complexe — c'est pourquoi la pensée systémique y est indispensable."
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Les 'pôles territoriaux' issus du chantier 14 du Pacte soutiennent l'OA6 (inclusion). Concrètement, ils permettent :",
+  "opts": [
+   "A. De regrouper plusieurs écoles spécialisées en un seul grand établissement par province",
+   "B. De supprimer progressivement les établissements spécialisés au profit de l'ordinaire",
+   "C. D'envoyer des experts du spécialisé dans les écoles ordinaires pour soutenir l'inclusion sans que les élèves quittent leur école",
+   "D. De créer des classes séparées dans les écoles ordinaires pour les élèves en situation de handicap"
+  ],
+  "ans": 2,
+  "exp": "Les pôles territoriaux permettent d'<strong>envoyer des experts du spécialisé dans les écoles ordinaires</strong> pour soutenir les élèves à besoins spécifiques et leurs enseignants. L'élève reste dans son école ordinaire — c'est l'expertise qui se déplace, pas l'élève. C'est l'innovation systémique du chantier 14."
+ },
+ {
+  "cat": "dco",
+  "diff": "moyen",
+  "q": "Le DCO doit formuler ses recommandations de façon 'motivée'. Que signifie ce terme dans le contexte légal ?",
+  "opts": [
+   "A. Les recommandations doivent être formulées de façon à motiver l'équipe éducative",
+   "B. Les recommandations doivent être approuvées par le DZ avant d'être transmises à l'école",
+   "C. Les recommandations doivent être fondées sur des données objectives du TABOR uniquement",
+   "D. Les recommandations doivent être justifiées par des arguments explicites fondés sur les textes légaux et les indicateurs"
+  ],
+  "ans": 3,
+  "exp": "Une recommandation <strong>'motivée'</strong> est une recommandation <strong>justifiée par des arguments explicites</strong> fondés sur les textes légaux (art. 67 décret Missions) et les données (indicateurs TABOR, cohérence du plan). Ce n'est pas une opinion — c'est une position argumentée que l'école peut comprendre et à laquelle elle peut répondre."
+ },
+ {
+  "cat": "system",
+  "diff": "difficile",
+  "q": "Le chantier 9 du Pacte porte sur la formation initiale des enseignants. Quelle réforme majeure a-t-il engagée ?",
+  "opts": [
+   "A. La suppression des Hautes Écoles au profit d'une formation universitaire unique",
+   "B. L'allongement de la formation initiale des enseignants du fondamental à un master (bac+5)",
+   "C. La création d'un concours national de recrutement des enseignants",
+   "D. L'obligation de stages en entreprise pour tous les futurs enseignants du qualifiant"
+  ],
+  "ans": 1,
+  "exp": "Le chantier 9 a conduit à l'<strong>allongement de la formation initiale</strong> des enseignants, notamment du fondamental, vers un niveau <strong>master (bac+5)</strong>. Cette réforme vise à professionnaliser davantage le métier d'enseignant et à renforcer la qualité de l'enseignement dès la formation initiale."
+ },
+ {
+  "cat": "pilotage",
+  "diff": "moyen",
+  "q": "Dans l'application PILOTAGE, combien de thématiques transversales obligatoires sont distinctes des 15 thématiques classiques ?",
+  "opts": [
+   "A. 3 thématiques transversales obligatoires (travail collaboratif, tronc commun, FPC)",
+   "B. 2 thématiques transversales (tronc commun et travail collaboratif uniquement)",
+   "C. 5 thématiques transversales correspondant aux 5 axes du Pacte",
+   "D. 1 seule thématique transversale (le plan de formation)"
+  ],
+  "ans": 0,
+  "exp": "Il y a <strong>3 thématiques transversales obligatoires</strong>, distinctes des 15 thématiques classiques : 1° le <strong>travail collaboratif</strong>, 2° la <strong>mise en œuvre du tronc commun</strong>, 3° la <strong>formation professionnelle continue (FPC)</strong>. Ces 3 thématiques correspondent aux 3 stratégies obligatoires de tout plan de pilotage."
+ },
+ {
+  "cat": "systheo",
+  "diff": "difficile",
+  "q": "Un DCO applique la démarche systémique lors de l'évaluation finale d'un contrat. Il doit évaluer 'l'efficacité des stratégies'. En pensée systémique, cela signifie :",
+  "opts": [
+   "A. Vérifier que chaque stratégie a atteint son objectif chiffré spécifique",
+   "B. Comparer les résultats de l'école avec la moyenne des établissements FWB",
+   "C. Analyser si les stratégies ont bien agi sur les causes identifiées et généré les changements attendus dans le système",
+   "D. Vérifier que les ressources allouées aux stratégies ont été consommées correctement"
+  ],
+  "ans": 2,
+  "exp": "L'efficacité systémique des stratégies se mesure en analysant si elles ont <strong>agi sur les causes identifiées</strong> et <strong>généré les changements attendus dans le système</strong>. Ce n'est pas une comparaison avec d'autres écoles ni une vérification budgétaire — c'est une analyse de causalité systémique : les leviers actionnés ont-ils produit les effets prévus ?"
+ },
+ {
+  "cat": "pacte",
+  "diff": "moyen",
+  "q": "Le Pacte parle de 'l'école inclusive'. Concrètement, au-delà des pôles territoriaux, quelle autre mesure concrète soutient l'OA6 ?",
+  "opts": [
+   "A. La suppression de toutes les orientations vers le spécialisé d'ici 2030",
+   "B. L'obligation pour chaque école ordinaire d'accueillir au moins 5% d'élèves du spécialisé",
+   "C. La création de classes bilingues pour les élèves sourds dans toutes les écoles ordinaires",
+   "D. Les 'aménagements raisonnables' permettant à un élève en situation de handicap de participer équitablement à l'enseignement ordinaire"
+  ],
+  "ans": 3,
+  "exp": "Les <strong>aménagements raisonnables</strong> (temps supplémentaire, supports adaptés, matériel spécifique) permettent à un élève en situation de handicap de <strong>participer équitablement</strong> à l'enseignement ordinaire. Ils sont la traduction pratique de la Convention ONU relative aux droits des personnes handicapées et de l'OA6 du Pacte."
+ },
+ {
+  "cat": "dco",
+  "diff": "facile",
+  "q": "Demain, samedi 16 mai 2026, vous passez l'épreuve DCO. À quelle heure devez-vous vous présenter au plus tard ?",
+  "opts": [
+   "A. 9h30 (heure de début de l'épreuve)",
+   "B. 9h15 (heure de présence requise selon la circulaire 9669)",
+   "C. 9h00 (30 minutes avant le début)",
+   "D. 8h45 (45 minutes avant pour l'installation)"
+  ],
+  "ans": 1,
+  "exp": "La circulaire 9669 précise que les candidats doivent se présenter à <strong>9h15 au plus tard</strong>. L'épreuve commence à 9h30 et se termine à 13h30. Lieu : Auditoire De Méan, Bâtiment B31, Place des Orateurs 3, 4000 Liège. Munissez-vous de votre carte d'identité et de quoi écrire. <strong>Bon courage !</strong> 🥊"
+ }
+];
+const CAT_L={pacte:'Pacte Excellence',system:'Système éducatif FWB',etab:'Établissements',systheo:'Analyse systémique',dco:'Statut DCO',pilotage:'Plan de pilotage'};
+const CAT_C={pacte:'cat-pacte',system:'cat-system',etab:'cat-etab',systheo:'cat-systheo',dco:'cat-dco',pilotage:'cat-pilotage'};
+const SK='dco_v4';
+let qs=[],cur=0,sc={total:0,correct:0,wrong:0},cats={},mode='all',topics=new Set(['pacte','system','etab','systheo','dco','pilotage']),mistakes=[],answered=false;
+function lSess(){try{var r=localStorage.getItem(SK);return r?JSON.parse(r):[]}catch(e){return[]}}
+function sSess(s){try{localStorage.setItem(SK,JSON.stringify(s))}catch(e){}}
+function saveSess(sc2,m){var s=lSess();s.push({date:new Date().toISOString(),correct:sc2.correct,total:sc2.total,pct:Math.round(sc2.correct/sc2.total*100),mode:m});if(s.length>50)s.splice(0,s.length-50);sSess(s);}
+function clearProg(){if(confirm('Effacer tout l historique ?')){localStorage.removeItem(SK);renderProg();}}
+function pc(p){return p>=75?'var(--correct)':p>=55?'var(--warn)':'var(--wrong)';}
+function toggleProg(){var el=document.getElementById('prog-screen');if(!el)return;if(el.style.display==='block'){el.style.display='none';}else{renderProg();el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'start'});}}
+function renderProg(){var s=lSess();var st=document.getElementById('pstats');var sl=document.getElementById('slist');var tb=document.getElementById('tbar');if(!st)return;if(s.length===0){st.innerHTML='';if(tb)tb.innerHTML='';sl.innerHTML='<div class="no-sess">Aucune session. Lancez votre premier test !</div>';return;}
+var tq=s.reduce(function(a,x){return a+x.total;},0),tok=s.reduce(function(a,x){return a+x.correct;},0),avg=Math.round(tok/tq*100),best=Math.max.apply(null,s.map(function(x){return x.pct;}));
+st.innerHTML='<div class="pstat"><div class="pstat-val" style="color:'+pc(avg)+'">'+avg+'%</div><div class="pstat-lbl">Moyenne</div></div><div class="pstat"><div class="pstat-val" style="color:var(--correct)">'+best+'%</div><div class="pstat-lbl">Meilleur</div></div><div class="pstat"><div class="pstat-val">'+s.length+'</div><div class="pstat-lbl">Sessions</div></div>';
+var r=s.slice(-10);if(tb)tb.innerHTML=r.map(function(x,i){var h=Math.max(4,Math.round(x.pct/100*44));return'<div class="tcol"><div class="tbar" style="height:'+h+'px;background:'+pc(x.pct)+';opacity:'+(0.4+i*0.065)+';"></div><div class="tlbl">'+x.pct+'</div></div>';}).join('');
+var ml={all:'Complet',random30:'Sprint',mistakes:'Erreurs'};sl.innerHTML=s.slice().reverse().slice(0,20).map(function(x){var d=new Date(x.date),ds=d.toLocaleDateString('fr-BE',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+d.toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'}),cl=x.pct>=75?'s-ex':x.pct>=55?'s-go':'s-ba';return'<div class="sess-card"><div><div class="sess-date">'+ds+'</div><div class="sess-det">'+x.correct+'/'+x.total+' correctes</div></div><div style="display:flex;align-items:center;gap:0.75rem;"><span class="sess-mode">'+(ml[x.mode]||x.mode)+'</span><div class="sess-score '+cl+'">'+x.pct+'%</div></div></div>';}).join('');}
+function checkPW(){var v=document.getElementById('pw-input').value.trim().toUpperCase(),i=document.getElementById('pw-input'),e=document.getElementById('pw-err');if(v==='ROCKY'){document.getElementById('pw-screen').style.display='none';i.classList.remove('err');}else{i.classList.add('err');e.classList.add('show');document.getElementById('pw-input').value='';setTimeout(function(){i.classList.remove('err');},500);}}
+window.addEventListener('load',function(){var i=document.getElementById('pw-input');if(i)setTimeout(function(){i.focus();},300);});
+function selMode(el){document.querySelectorAll('.mode-card').forEach(function(c){c.classList.remove('sel');});el.classList.add('sel');mode=el.dataset.mode;}
+function togTopic(el){var t=el.dataset.topic;if(topics.has(t)){topics.delete(t);el.classList.remove('sel');}else{topics.add(t);el.classList.add('sel');}}
+function showWelcome(){['welcome','quiz','results'].forEach(function(id){document.getElementById(id).style.display=id==='welcome'?'block':'none';});['hq','hok','hko'].forEach(function(id){document.getElementById(id).textContent='—';});document.getElementById('pbar').style.width='0%';}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}}
+function startQuiz(fm){answered=false;['welcome','results'].forEach(function(id){document.getElementById(id).style.display='none';});document.getElementById('quiz').style.display='block';
+if(fm){qs=mistakes.slice();if(!qs.length){alert('Aucune erreur !');showWelcome();return;}}
+else if(mode==='all'){qs=ALL_Q.filter(function(q){return topics.has(q.cat);});shuffle(qs);}
+else if(mode==='random30'){var p=ALL_Q.filter(function(q){return topics.has(q.cat);});shuffle(p);qs=p.slice(0,30);}
+else if(mode==='mistakes'){qs=mistakes.slice();if(!qs.length){alert('Aucune erreur enregistrée.');showWelcome();return;}shuffle(qs);}
+cur=0;sc={total:qs.length,correct:0,wrong:0};cats={};if(!fm)mistakes=[];
+qs.forEach(function(q){if(!cats[q.cat])cats[q.cat]={correct:0,total:0};cats[q.cat].total++;});
+renderQ();}
+function revMistakes(){startQuiz(true);}
+function restartAll(){showWelcome();}
+function renderQ(){answered=false;var q=qs[cur];document.getElementById('pbar').style.width=Math.round(cur/qs.length*100)+'%';document.getElementById('hq').textContent=(cur+1)+'/'+qs.length;document.getElementById('hok').textContent=sc.correct;document.getElementById('hko').textContent=sc.wrong;
+var dl=q.diff==='facile'?'Facile':q.diff==='moyen'?'Moyen':'Difficile';
+document.getElementById('quiz').innerHTML='<div class="q-card"><span class="cat-badge '+(CAT_C[q.cat]||'cat-pacte')+'">'+(CAT_L[q.cat]||q.cat)+'</span><span class="diff diff-'+q.diff+'">'+dl+'</span><div class="q-num">Question '+(cur+1)+' sur '+qs.length+'</div><div class="q-text">'+q.q+'</div><div class="options" id="opts">'+q.opts.map(function(o,i){return'<button class="opt" onclick="selAns('+i+')" data-idx="'+i+'"><span class="opt-l">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span></button>';}).join('')+'</div><div class="expl" id="expl"></div><button class="btn-next" id="bnxt" onclick="nextQ()">Question suivante →</button></div>';}
+function selAns(idx){if(answered)return;answered=true;var q=qs[cur];var bs=document.querySelectorAll('.opt');bs.forEach(function(b){b.disabled=true;});bs[idx].classList.add(idx===q.ans?'correct':'wrong');if(idx!==q.ans)bs[q.ans].classList.add('correct');
+var ex=document.getElementById('expl');if(idx===q.ans){sc.correct++;cats[q.cat].correct++;ex.className='expl ok show';ex.innerHTML='✅ <strong>Correct !</strong> '+q.exp;}else{sc.wrong++;var f=false;for(var m=0;m<mistakes.length;m++){if(mistakes[m]===q){f=true;break;}}if(!f)mistakes.push(q);ex.className='expl ko show';ex.innerHTML='❌ <strong>Incorrect.</strong> La bonne réponse était <strong>'+q.opts[q.ans]+'</strong>.<br><br>'+q.exp;}
+document.getElementById('hok').textContent=sc.correct;document.getElementById('hko').textContent=sc.wrong;var nb=document.getElementById('bnxt');nb.classList.add('show');if(cur===qs.length-1)nb.textContent='Voir mes résultats →';}
+function nextQ(){cur++;if(cur>=qs.length){showResults();return;}renderQ();}
+function showResults(){document.getElementById('quiz').style.display='none';document.getElementById('results').style.display='block';document.getElementById('pbar').style.width='100%';
+var pct=Math.round(sc.correct/sc.total*100),bi=document.getElementById('sbig');bi.textContent=pct+'%';bi.className='score-big '+(pct>=75?'excellent':pct>=55?'good':'bad');
+var msgs=[[85,'🏆 Excellent ! Vous êtes prêt(e) pour l&#x27;examen !'],[70,'💪 Très bien ! Continuez l&#x27;entraînement.'],[55,'📚 Bon travail, encore quelques révisions.'],[0,'🔁 Revoyez les fiches et recommencez !']];
+document.getElementById('rmsg').textContent=msgs.filter(function(m){return pct>=m[0];})[0][1];
+var cn={pacte:'Pacte Excellence',system:'Système FWB',etab:'Établissements',systheo:'Analyse systémique',dco:'Statut DCO',pilotage:'Plan pilotage'};
+var bh='';Object.entries(cats).forEach(function(e){if(!e[1].total)return;var cp=Math.round(e[1].correct/e[1].total*100),cl=cp>=80?'p':cp>=60?'g':'b';bh+='<div class="bd-item"><div class="bd-cat">'+(cn[e[0]]||e[0])+'</div><div class="bd-score '+cl+'">'+e[1].correct+'/'+e[1].total+' ('+cp+'%)</div></div>';});
+document.getElementById('rbd').innerHTML=bh;['hq','hok','hko'].forEach(function(id,i){document.getElementById(id).textContent=[sc.total+'/'+sc.total,sc.correct,sc.wrong][i];});
+saveSess(sc,mode);}
+</script>
+</body>
+</html>
